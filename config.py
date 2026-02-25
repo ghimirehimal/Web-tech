@@ -8,11 +8,17 @@ from datetime import timedelta
 
 class Config:
     # Secret key for session management and flash messages
-    SECRET_KEY = 'jutta-lagani-secret-key-2024'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'jutta-lagani-secret-key-2024'
     
     # Database Configuration
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'instance', 'jutta_lagani.db')
+    
+    # Use SQLite for local development, PostgreSQL for production (Render)
+    if os.environ.get('DATABASE_URL'):
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    else:
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'instance', 'jutta_lagani.db')
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
     
