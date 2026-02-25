@@ -9,7 +9,7 @@ Flask-WTF==1.2.1
 Flask-Bcrypt==1.0.1
 
 # Database
-SQLAlchemy==2.0.23
+SQLAlchemy==2.0.36
 Werkzeug==3.0.1
 
 # WTForms
