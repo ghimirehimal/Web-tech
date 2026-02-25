@@ -1,0 +1,388 @@
+{% extends "base.html" %} {% block title %}Admin Dashboard - JUTTA LAGANI{%
+endblock %} {% block extra_css %}
+<style>
+  .admin-section {
+    padding: 40px 0;
+    background: #f5f5f5;
+    min-height: 100vh;
+  }
+
+  .admin-header {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+      url("https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    padding: 40px 0;
+    margin-bottom: 30px;
+  }
+
+  .stats-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .stats-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .icon-products {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+  .icon-orders {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+  }
+  .icon-users {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+  }
+  .icon-revenue {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+  }
+
+  .stats-info h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .stats-info p {
+    color: #666;
+    margin: 0;
+  }
+
+  .admin-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+  }
+
+  .card-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #8b0000;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .table-custom {
+    width: 100%;
+  }
+
+  .table-custom th {
+    background: #f8f9fa;
+    padding: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  .table-custom td {
+    padding: 15px 12px;
+    vertical-align: middle;
+  }
+
+  .status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .stock-badge {
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+  }
+
+  .stock-low {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .stock-ok {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .action-btn {
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    margin-right: 5px;
+  }
+
+  .sidebar-admin {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+  }
+
+  .admin-nav-link:hover,
+  .admin-nav-link.active {
+    background: #8b0000;
+    color: white;
+  }
+
+  .admin-nav-link i {
+    width: 20px;
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- Admin Header -->
+<section class="admin-header">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center text-white">
+      <div>
+        <h2 class="mb-1"><i class="fas fa-cog me-2"></i>Admin Dashboard</h2>
+        <p class="mb-0">Manage your store</p>
+      </div>
+      <a href="{{ url_for('index') }}" class="btn btn-outline-light">
+        <i class="fas fa-home me-2"></i>View Site
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Admin Content -->
+<section class="admin-section">
+  <div class="container">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-lg-3">
+        <div class="sidebar-admin">
+          <a
+            href="{{ url_for('admin_dashboard') }}"
+            class="admin-nav-link active"
+          >
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </a>
+          <a href="{{ url_for('admin_products') }}" class="admin-nav-link">
+            <i class="fas fa-box"></i> Products
+          </a>
+          <a href="{{ url_for('admin_product_add') }}" class="admin-nav-link">
+            <i class="fas fa-plus-circle"></i> Add Product
+          </a>
+          <a href="{{ url_for('admin_orders') }}" class="admin-nav-link">
+            <i class="fas fa-shopping-cart"></i> Orders
+          </a>
+          <a href="{{ url_for('shop') }}" class="admin-nav-link">
+            <i class="fas fa-globe"></i> View Store
+          </a>
+          <a href="{{ url_for('logout') }}" class="admin-nav-link text-danger">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-lg-9">
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-6 col-xl-3">
+            <div class="stats-card">
+              <div class="stats-icon icon-products">
+                <i class="fas fa-box"></i>
+              </div>
+              <div class="stats-info">
+                <h3>{{ total_products }}</h3>
+                <p>Total Products</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-xl-3">
+            <div class="stats-card">
+              <div class="stats-icon icon-orders">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <div class="stats-info">
+                <h3>{{ total_orders }}</h3>
+                <p>Total Orders</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-xl-3">
+            <div class="stats-card">
+              <div class="stats-icon icon-users">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="stats-info">
+                <h3>{{ total_users }}</h3>
+                <p>Total Users</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-xl-3">
+            <div class="stats-card">
+              <div class="stats-icon icon-revenue">
+                <i class="fas fa-rupee-sign"></i>
+              </div>
+              <div class="stats-info">
+                <h3>₹{{ "%.0f"|format(total_revenue) }}</h3>
+                <p>Total Revenue</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="admin-card">
+          <div class="card-header-custom">
+            <h5 class="card-title">
+              <i class="fas fa-shopping-cart me-2"></i>Recent Orders
+            </h5>
+            <a
+              href="{{ url_for('admin_orders') }}"
+              class="btn btn-sm btn-outline-dark"
+              >View All</a
+            >
+          </div>
+
+          <table class="table table-custom">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in recent_orders %}
+              <tr>
+                <td><strong>{{ order.order_number }}</strong></td>
+                <td>{{ order.user.username }}</td>
+                <td>₹{{ "%.2f"|format(order.total_amount) }}</td>
+                <td>
+                  <span
+                    class="status-badge badge bg-{{ 'success' if order.status == 'delivered' else 'warning' }}"
+                  >
+                    {{ order.status|title }}
+                  </span>
+                </td>
+                <td>{{ order.created_at.strftime('%d %b %Y') }}</td>
+                <td>
+                  <a
+                    href="{{ url_for('admin_order_detail', order_id=order.id) }}"
+                    class="action-btn btn btn-sm btn-outline-primary"
+                  >
+                    View
+                  </a>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="6" class="text-center text-muted">
+                  No orders yet
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Low Stock Products -->
+        <div class="admin-card">
+          <div class="card-header-custom">
+            <h5 class="card-title">
+              <i class="fas fa-exclamation-triangle me-2"></i>Low Stock Products
+            </h5>
+            <a
+              href="{{ url_for('admin_products') }}"
+              class="btn btn-sm btn-outline-dark"
+              >Manage Products</a
+            >
+          </div>
+
+          <table class="table table-custom">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in low_stock %}
+              <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category|title }}</td>
+                <td>₹{{ "%.2f"|format(product.price) }}</td>
+                <td>
+                  <span class="stock-badge stock-low">
+                    <i class="fas fa-exclamation-circle me-1"></i>{{
+                    product.stock }} left
+                  </span>
+                </td>
+                <td>
+                  <a
+                    href="{{ url_for('admin_product_edit', product_id=product.id) }}"
+                    class="action-btn btn btn-sm btn-outline-primary"
+                  >
+                    Edit
+                  </a>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="5" class="text-center text-muted">
+                  All products are well stocked
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

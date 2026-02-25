@@ -1,0 +1,178 @@
+{% extends "base.html" %} {% block title %}My Wishlist - JUTTA LAGANI{% endblock
+%} {% block extra_css %}
+<style>
+  .wishlist-header {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    margin-bottom: 40px;
+  }
+
+  .wishlist-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+  }
+
+  .wishlist-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .wishlist-image {
+    height: 200px;
+    overflow: hidden;
+    background: #f8f9fa;
+  }
+
+  .wishlist-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .wishlist-card:hover .wishlist-image img {
+    transform: scale(1.1);
+  }
+
+  .wishlist-info {
+    padding: 1.5rem;
+  }
+
+  .wishlist-category {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .wishlist-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    color: #333;
+  }
+
+  .wishlist-title a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+  }
+
+  .wishlist-title a:hover {
+    color: #8b0000;
+  }
+
+  .wishlist-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #8b0000;
+    margin-bottom: 1rem;
+  }
+
+  .empty-wishlist {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .empty-wishlist i {
+    font-size: 5rem;
+    color: #ccc;
+    margin-bottom: 20px;
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- Wishlist Header -->
+<section class="wishlist-header">
+  <div class="container">
+    <div class="text-center text-white">
+      <h1 class="mb-3">My Wishlist</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center">
+          <li class="breadcrumb-item">
+            <a href="{{ url_for('index') }}" class="text-white">Home</a>
+          </li>
+          <li class="breadcrumb-item active text-white" aria-current="page">
+            Wishlist
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- Wishlist Content -->
+<section class="pb-5">
+  <div class="container">
+    {% if wishlist_items %}
+    <div class="row g-4">
+      {% for item in wishlist_items %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="wishlist-card">
+          <div class="wishlist-image">
+            {% if item.product.category == 'shoes' %}
+            <img
+              src="https://via.placeholder.com/300x200/8B0000/FFFFFF?text={{ item.product.name|urlencode }}"
+              alt="{{ item.product.name }}"
+            />
+            {% else %}
+            <img
+              src="https://via.placeholder.com/300x200/333333/FFFFFF?text={{ item.product.name|urlencode }}"
+              alt="{{ item.product.name }}"
+            />
+            {% endif %}
+          </div>
+
+          <div class="wishlist-info">
+            <span class="wishlist-category">{{ item.product.category }}</span>
+            <h5 class="wishlist-title">
+              <a
+                href="{{ url_for('product_detail', product_id=item.product.id) }}"
+                >{{ item.product.name }}</a
+              >
+            </h5>
+            <div class="wishlist-price">
+              ₹{{ "%.2f"|format(item.product.price) }}
+            </div>
+
+            <div class="d-flex gap-2">
+              <a
+                href="{{ url_for('add_to_cart', product_id=item.product.id) }}"
+                class="btn btn-sm btn-outline-dark flex-grow-1"
+              >
+                <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+              </a>
+              <a
+                href="{{ url_for('remove_from_wishlist', wishlist_id=item.id) }}"
+                class="btn btn-sm btn-outline-danger"
+              >
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="empty-wishlist">
+      <i class="far fa-heart"></i>
+      <h3>Your Wishlist is Empty</h3>
+      <p class="text-muted">Save your favorite products to buy them later</p>
+      <a href="{{ url_for('shop') }}" class="btn btn-dark mt-3">
+        <i class="fas fa-shopping-bag me-2"></i>Start Shopping
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

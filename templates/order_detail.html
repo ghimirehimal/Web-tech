@@ -1,0 +1,99 @@
+{% extends "base.html" %} {% block title %}Order Details - JUTTA LAGANI{%
+endblock %} {% block extra_css %}
+<style>
+  .order-detail-section {
+    padding: 40px 0;
+  }
+  .order-detail-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .detail-row:last-child {
+    border-bottom: none;
+  }
+  .status-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+</style>
+{% endblock %} {% block content %}
+<section class="order-detail-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="order-detail-card mb-4">
+          <h4>Order #{{ order.order_number }}</h4>
+          <span class="status-badge status-{{ order.status }}"
+            >{{ order.status|title }}</span
+          >
+
+          <h5 class="mt-4">Order Items</h5>
+          {% for item in order.items %}
+          <div class="detail-row">
+            <div class="d-flex align-items-center gap-3">
+              <img
+                src="https://via.placeholder.com/60x60/333333/FFFFFF?text=Item"
+                style="width: 60px; height: 60px; border-radius: 8px"
+              />
+              <div>
+                <strong>{{ item.product_name }}</strong>
+                <p class="text-muted mb-0">
+                  Qty: {{ item.quantity }} × ₹{{ "%.2f"|format(item.unit_price)
+                  }}
+                </p>
+              </div>
+            </div>
+            <strong>₹{{ "%.2f"|format(item.total_price) }}</strong>
+          </div>
+          {% endfor %}
+
+          <div class="detail-row mt-3">
+            <span>Subtotal</span>
+            <span>₹{{ "%.2f"|format(order.subtotal) }}</span>
+          </div>
+          <div class="detail-row">
+            <span>Shipping</span>
+            <span>₹{{ "%.2f"|format(order.shipping_cost) }}</span>
+          </div>
+          <div class="detail-row">
+            <span>Tax</span>
+            <span>₹{{ "%.2f"|format(order.tax) }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Total</strong>
+            <strong class="text-danger"
+              >₹{{ "%.2f"|format(order.total_amount) }}</strong
+            >
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="order-detail-card">
+          <h5>Shipping Address</h5>
+          <p>
+            {{ order.shipping_name }}<br />{{ order.shipping_address }}<br />{{
+            order.shipping_city }}<br />Phone: {{ order.shipping_phone }}
+          </p>
+          <hr />
+          <h5>Payment</h5>
+          <p>
+            Method: {{ order.payment_method|replace('cod','Cash on
+            Delivery')|replace('card','Card') }}<br />Status: {{
+            order.payment_status|title }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

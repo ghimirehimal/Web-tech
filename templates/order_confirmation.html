@@ -1,0 +1,190 @@
+{% extends "base.html" %} {% block title %}Order Confirmed - JUTTA LAGANI{%
+endblock %} {% block extra_css %}
+<style>
+  .confirmation-section {
+    padding: 60px 0;
+    min-height: 70vh;
+  }
+
+  .success-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .success-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    font-size: 3rem;
+    color: white;
+  }
+
+  .order-info {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 30px 0;
+    text-align: left;
+  }
+
+  .order-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #8b0000;
+  }
+
+  .order-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .order-detail-row:last-child {
+    border-bottom: none;
+  }
+
+  .order-items {
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  .order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .btn-group-custom {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+</style>
+{% endblock %} {% block content %}
+<section class="confirmation-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="success-card">
+          <div class="success-icon">
+            <i class="fas fa-check"></i>
+          </div>
+
+          <h2>Thank You for Your Order!</h2>
+          <p class="text-muted">Your order has been placed successfully.</p>
+
+          <div class="order-info">
+            <div class="text-center mb-4">
+              <p class="mb-1">Order Number</p>
+              <div class="order-number">{{ order.order_number }}</div>
+            </div>
+
+            <div class="order-detail-row">
+              <span>Order Date</span>
+              <strong>{{ order.created_at.strftime('%B %d, %Y') }}</strong>
+            </div>
+
+            <div class="order-detail-row">
+              <span>Payment Method</span>
+              <strong
+                >{{ order.payment_method|replace('cod', 'Cash on
+                Delivery')|replace('card', 'Credit/Debit Card') }}</strong
+              >
+            </div>
+
+            <div class="order-detail-row">
+              <span>Payment Status</span>
+              <strong class="text-warning"
+                >{{ order.payment_status|title }}</strong
+              >
+            </div>
+
+            <div class="order-detail-row">
+              <span>Order Status</span>
+              <strong class="text-info">{{ order.status|title }}</strong>
+            </div>
+          </div>
+
+          <div class="order-items">
+            <h5>Order Items</h5>
+            {% for item in order.items %}
+            <div class="order-item">
+              <img
+                src="https://via.placeholder.com/60x60/333333/FFFFFF?text=Item"
+                alt="{{ item.product_name }}"
+                style="
+                  width: 60px;
+                  height: 60px;
+                  object-fit: cover;
+                  border-radius: 8px;
+                "
+              />
+              <div class="flex-grow-1">
+                <h6 class="mb-0">{{ item.product_name }}</h6>
+                <p class="text-muted mb-0">
+                  Qty: {{ item.quantity }} × ₹{{ "%.2f"|format(item.unit_price)
+                  }}
+                </p>
+              </div>
+              <strong>₹{{ "%.2f"|format(item.total_price) }}</strong>
+            </div>
+            {% endfor %}
+
+            <div class="order-detail-row mt-3">
+              <span>Subtotal</span>
+              <span>₹{{ "%.2f"|format(order.subtotal) }}</span>
+            </div>
+            <div class="order-detail-row">
+              <span>Shipping</span>
+              <span>₹{{ "%.2f"|format(order.shipping_cost) }}</span>
+            </div>
+            <div class="order-detail-row">
+              <span>Tax</span>
+              <span>₹{{ "%.2f"|format(order.tax) }}</span>
+            </div>
+            <div class="order-detail-row">
+              <span><strong>Total</strong></span>
+              <span
+                ><strong class="text-danger"
+                  >₹{{ "%.2f"|format(order.total_amount) }}</strong
+                ></span
+              >
+            </div>
+          </div>
+
+          <div class="order-info">
+            <h6>Shipping Address</h6>
+            <p class="mb-0">
+              {{ order.shipping_name }}<br />
+              {{ order.shipping_address }}<br />
+              {{ order.shipping_city }}<br />
+              Phone: {{ order.shipping_phone }}
+            </p>
+          </div>
+
+          <div class="btn-group-custom">
+            <a href="{{ url_for('my_orders') }}" class="btn btn-dark">
+              <i class="fas fa-box me-2"></i>View My Orders
+            </a>
+            <a href="{{ url_for('shop') }}" class="btn btn-outline-dark">
+              <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

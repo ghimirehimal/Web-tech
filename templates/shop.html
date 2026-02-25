@@ -1,0 +1,260 @@
+{% extends "base.html" %} {% block title %}Shop - JUTTA LAGANI{% endblock %} {%
+block extra_css %}
+<style>
+  .shop-header {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920");
+    background-size: cover;
+    padding: 60px 0;
+    margin-bottom: 40px;
+  }
+  .filter-sidebar {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 100px;
+  }
+  .filter-section {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  .filter-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  .filter-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .filter-option input {
+    margin-right: 10px;
+  }
+  .filter-option label {
+    cursor: pointer;
+    color: #666;
+  }
+  .sort-dropdown {
+    border-radius: 25px;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+  }
+  .product-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  .product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+  .product-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    background: #f8f9fa;
+  }
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .product-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #dc3545;
+    color: white;
+  }
+  .product-actions {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+  .product-action-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  .product-info {
+    padding: 1.25rem;
+  }
+  .product-category {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+  }
+  .product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    color: #333;
+  }
+  .current-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #8b0000;
+  }
+  .original-price {
+    font-size: 0.9rem;
+    color: #999;
+    text-decoration: line-through;
+  }
+</style>
+{% endblock %} {% block content %}
+<section class="shop-header">
+  <div class="container">
+    <div class="text-center text-white">
+      <h1 class="mb-3">
+        {% if current_category %}{{ current_category|title }}{% else %}All
+        Products{% endif %}
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center">
+          <li class="breadcrumb-item">
+            <a href="{{ url_for('index') }}" class="text-white">Home</a>
+          </li>
+          <li class="breadcrumb-item active text-white">Shop</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="filter-sidebar">
+          <h5 class="mb-4"><i class="fas fa-filter me-2"></i>Filters</h5>
+          <div class="filter-section">
+            <h6 class="filter-title">Category</h6>
+            <div class="filter-option">
+              <input
+                type="radio"
+                id="cat-all"
+                name="category"
+                onclick="window.location.href='{{ url_for('shop') }}'"
+              />
+              <label for="cat-all">All Products</label>
+            </div>
+            <div class="filter-option">
+              <input
+                type="radio"
+                id="cat-shoes"
+                name="category"
+                onclick="window.location.href='{{ url_for('shop', category='shoes') }}'"
+              />
+              <label for="cat-shoes">Shoes</label>
+            </div>
+            <div class="filter-option">
+              <input
+                type="radio"
+                id="cat-clothing"
+                name="category"
+                onclick="window.location.href='{{ url_for('shop', category='clothing') }}'"
+              />
+              <label for="cat-clothing">Clothing</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-9">
+        <div class="mb-4">
+          <span class="text-muted"
+            >Showing {{ products.items|length }} of {{ products.total }}
+            products</span
+          >
+        </div>
+
+        {% if products.items %}
+        <div class="row g-4">
+          {% for product in products.items %}
+          <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="product-card">
+              <div class="product-image">
+                {% if product.discount_percentage > 0 %}
+                <span class="product-badge"
+                  >{{ product.discount_percentage }}% OFF</span
+                >
+                {% endif %}
+                <div class="product-actions">
+                  <a
+                    href="{{ url_for('product_detail', product_id=product.id) }}"
+                    class="product-action-btn"
+                    ><i class="fas fa-eye"></i
+                  ></a>
+                </div>
+                {% if product.category == 'shoes' %}
+                <img
+                  src="https://via.placeholder.com/300x250/8B0000/FFFFFF?text=Shoes"
+                  alt="{{ product.name }}"
+                />
+                {% else %}
+                <img
+                  src="https://via.placeholder.com/300x250/333333/FFFFFF?text=Clothing"
+                  alt="{{ product.name }}"
+                />
+                {% endif %}
+              </div>
+              <div class="product-info">
+                <span class="product-category">{{ product.category }}</span>
+                <h5 class="product-title">
+                  <a
+                    href="{{ url_for('product_detail', product_id=product.id) }}"
+                    >{{ product.name }}</a
+                  >
+                </h5>
+                <div class="product-price">
+                  <span class="current-price"
+                    >Rs{{ "%.2f"|format(product.price) }}</span
+                  >
+                </div>
+                {% if product.stock > 0 %}
+                <a
+                  href="{{ url_for('add_to_cart', product_id=product.id) }}"
+                  class="btn btn-sm btn-outline-dark mt-3 w-100"
+                  ><i class="fas fa-shopping-cart me-2"></i>Add to Cart</a
+                >
+                {% else %}
+                <button class="btn btn-sm btn-secondary mt-3 w-100" disabled>
+                  Out of Stock
+                </button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+          <i class="fas fa-shopping-bag display-1 text-muted mb-3"></i>
+          <h3>No Products Found</h3>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

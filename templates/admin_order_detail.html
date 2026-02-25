@@ -1,0 +1,218 @@
+{% extends "base.html" %} {% block title %}Order Details - JUTTA LAGANI Admin{%
+endblock %} {% block extra_css %}
+<style>
+  .admin-section {
+    padding: 40px 0;
+    background: #f5f5f5;
+    min-height: 100vh;
+  }
+  .admin-header {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+      url("https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    padding: 40px 0;
+    margin-bottom: 30px;
+  }
+  .admin-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .sidebar-admin {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+  .admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+  }
+  .admin-nav-link:hover,
+  .admin-nav-link.active {
+    background: #8b0000;
+    color: white;
+  }
+</style>
+{% endblock %} {% block content %}
+<section class="admin-header">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center text-white">
+      <div>
+        <h2 class="mb-1">
+          <i class="fas fa-shopping-cart me-2"></i>Order Details
+        </h2>
+        <p class="mb-0">Order #{{ order.order_number }}</p>
+      </div>
+      <a href="{{ url_for('admin_orders') }}" class="btn btn-outline-light"
+        ><i class="fas fa-arrow-left me-2"></i>Back to Orders</a
+      >
+    </div>
+  </div>
+</section>
+
+<section class="admin-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="sidebar-admin">
+          <a href="{{ url_for('admin_dashboard') }}" class="admin-nav-link"
+            ><i class="fas fa-tachometer-alt"></i> Dashboard</a
+          >
+          <a href="{{ url_for('admin_products') }}" class="admin-nav-link"
+            ><i class="fas fa-box"></i> Products</a
+          >
+          <a href="{{ url_for('admin_orders') }}" class="admin-nav-link"
+            ><i class="fas fa-shopping-cart"></i> Orders</a
+          >
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="admin-card">
+          <h5>Update Order Status</h5>
+          <form
+            method="POST"
+            action="{{ url_for('admin_update_order_status', order_id=order.id) }}"
+            class="d-flex gap-2"
+          >
+            <select name="status" class="form-select">
+              <option
+                value="pending"
+                {%
+                if
+                order.status=""
+                ="pending"
+                %}selected{%
+                endif
+                %}
+              >
+                Pending
+              </option>
+              <option
+                value="processing"
+                {%
+                if
+                order.status=""
+                ="processing"
+                %}selected{%
+                endif
+                %}
+              >
+                Processing
+              </option>
+              <option
+                value="shipped"
+                {%
+                if
+                order.status=""
+                ="shipped"
+                %}selected{%
+                endif
+                %}
+              >
+                Shipped
+              </option>
+              <option
+                value="delivered"
+                {%
+                if
+                order.status=""
+                ="delivered"
+                %}selected{%
+                endif
+                %}
+              >
+                Delivered
+              </option>
+              <option
+                value="cancelled"
+                {%
+                if
+                order.status=""
+                ="cancelled"
+                %}selected{%
+                endif
+                %}
+              >
+                Cancelled
+              </option>
+            </select>
+            <button type="submit" class="btn btn-dark">Update</button>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h5>Order Items</h5>
+          {% for item in order.items %}
+          <div class="detail-row">
+            <div>
+              <strong>{{ item.product_name }}</strong><br /><small
+                class="text-muted"
+                >Qty: {{ item.quantity }} × ₹{{ "%.2f"|format(item.unit_price)
+                }}</small
+              >
+            </div>
+            <strong>₹{{ "%.2f"|format(item.total_price) }}</strong>
+          </div>
+          {% endfor %}
+          <div class="detail-row">
+            <span>Subtotal</span
+            ><span>₹{{ "%.2f"|format(order.subtotal) }}</span>
+          </div>
+          <div class="detail-row">
+            <span>Shipping</span
+            ><span>₹{{ "%.2f"|format(order.shipping_cost) }}</span>
+          </div>
+          <div class="detail-row">
+            <span>Tax</span><span>₹{{ "%.2f"|format(order.tax) }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Total</strong
+            ><strong class="text-danger"
+              >₹{{ "%.2f"|format(order.total_amount) }}</strong
+            >
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="admin-card">
+              <h5>Customer Details</h5>
+              <p>
+                <strong>{{ order.user.username }}</strong><br />{{
+                order.user.email }}
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="admin-card">
+              <h5>Shipping Address</h5>
+              <p>
+                {{ order.shipping_name }}<br />{{ order.shipping_address }}<br />{{
+                order.shipping_city }}<br />Phone: {{ order.shipping_phone }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

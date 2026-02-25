@@ -1,0 +1,464 @@
+{% extends "base.html" %} {% block title %}Checkout - JUTTA LAGANI{% endblock %}
+{% block extra_css %}
+<style>
+  .checkout-section {
+    padding: 40px 0;
+  }
+
+  .checkout-header {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url("https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    margin-bottom: 40px;
+  }
+
+  .checkout-form {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .form-section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #8b0000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .form-control,
+  .form-select {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #8b0000;
+    box-shadow: 0 0 0 0.2rem rgba(139, 0, 0, 0.25);
+  }
+
+  .order-summary {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 100px;
+  }
+
+  .order-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .order-item:last-child {
+    border-bottom: none;
+  }
+
+  .order-item-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #f8f9fa;
+  }
+
+  .order-item-info h6 {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .order-item-info .text-muted {
+    font-size: 0.85rem;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .summary-label {
+    color: #666;
+  }
+
+  .summary-value {
+    font-weight: 600;
+  }
+
+  .total-row {
+    font-size: 1.2rem;
+    padding-top: 15px;
+    border-top: 2px solid #eee;
+  }
+
+  .total-row .summary-value {
+    color: #8b0000;
+    font-size: 1.4rem;
+  }
+
+  .payment-method {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .payment-method:hover {
+    border-color: #8b0000;
+  }
+
+  .payment-method.selected {
+    border-color: #8b0000;
+    background: rgba(139, 0, 0, 0.05);
+  }
+
+  .payment-method input {
+    display: none;
+  }
+
+  .payment-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: #666;
+  }
+
+  .place-order-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+  }
+
+  .secure-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .secure-badge i {
+    color: #28a745;
+  }
+
+  .steps-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    color: #999;
+  }
+
+  .step.active {
+    color: #8b0000;
+  }
+
+  .step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  .step.active .step-number {
+    background: #8b0000;
+    color: white;
+    border-color: #8b0000;
+  }
+
+  .step-divider {
+    width: 60px;
+    height: 2px;
+    background: #ddd;
+    margin: 0 15px;
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- Checkout Header -->
+<section class="checkout-header">
+  <div class="container">
+    <div class="text-center text-white">
+      <h1 class="mb-3">Checkout</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center">
+          <li class="breadcrumb-item">
+            <a href="{{ url_for('index') }}" class="text-white">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{{ url_for('cart') }}" class="text-white">Cart</a>
+          </li>
+          <li class="breadcrumb-item active text-white" aria-current="page">
+            Checkout
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- Steps Indicator -->
+<div class="container">
+  <div class="steps-indicator">
+    <div class="step">
+      <span class="step-number">1</span>
+      <span>Cart</span>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step active">
+      <span class="step-number">2</span>
+      <span>Checkout</span>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step">
+      <span class="step-number">3</span>
+      <span>Confirmation</span>
+    </div>
+  </div>
+</div>
+
+<!-- Checkout Content -->
+<section class="checkout-section">
+  <div class="container">
+    <form method="POST" action="{{ url_for('checkout') }}">
+      <div class="row">
+        <!-- Billing Form -->
+        <div class="col-lg-8">
+          <div class="checkout-form mb-4">
+            <!-- Shipping Information -->
+            <div class="form-section-title">
+              <i class="fas fa-shipping-fast"></i>
+              Shipping Information
+            </div>
+
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label class="form-label">Full Name *</label>
+                {{ form.shipping_name(class="form-control", placeholder="Enter
+                your full name") }} {% if form.shipping_name.errors %}
+                <div class="text-danger small">
+                  {% for error in form.shipping_name.errors %}{{ error }}{%
+                  endfor %}
+                </div>
+                {% endif %}
+              </div>
+
+              <div class="col-12 mb-3">
+                <label class="form-label">Address *</label>
+                {{ form.shipping_address(class="form-control", rows="3",
+                placeholder="Enter your full address") }} {% if
+                form.shipping_address.errors %}
+                <div class="text-danger small">
+                  {% for error in form.shipping_address.errors %}{{ error }}{%
+                  endfor %}
+                </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">City *</label>
+                {{ form.shipping_city(class="form-control", placeholder="Enter
+                city") }} {% if form.shipping_city.errors %}
+                <div class="text-danger small">
+                  {% for error in form.shipping_city.errors %}{{ error }}{%
+                  endfor %}
+                </div>
+                {% endif %}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Phone Number *</label>
+                {{ form.shipping_phone(class="form-control", placeholder="Enter
+                phone number") }} {% if form.shipping_phone.errors %}
+                <div class="text-danger small">
+                  {% for error in form.shipping_phone.errors %}{{ error }}{%
+                  endfor %}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="checkout-form">
+            <div class="form-section-title">
+              <i class="fas fa-credit-card"></i>
+              Payment Method
+            </div>
+
+            <label
+              class="payment-method {% if form.payment_method.data == 'cod' %}selected{% endif %}"
+              onclick="selectPayment(this)"
+            >
+              <input
+                type="radio"
+                name="payment_method"
+                value="cod"
+                {%
+                if
+                form.payment_method.data=""
+                ="cod"
+                %}checked{%
+                endif
+                %}
+              />
+              <span class="payment-icon"
+                ><i class="fas fa-money-bill-wave"></i
+              ></span>
+              <div>
+                <strong>Cash on Delivery</strong>
+                <p class="text-muted mb-0 small">
+                  Pay when you receive your order
+                </p>
+              </div>
+            </label>
+
+            <label class="payment-method" onclick="selectPayment(this)">
+              <input type="radio" name="payment_method" value="card" disabled />
+              <span class="payment-icon"
+                ><i class="fas fa-credit-card"></i
+              ></span>
+              <div>
+                <strong>Credit/Debit Card</strong>
+                <p class="text-muted mb-0 small">Coming soon</p>
+              </div>
+            </label>
+
+            {{ form.payment_method(type="hidden", id="selected_payment") }}
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+          <div class="order-summary">
+            <h4 class="form-section-title">Order Summary</h4>
+
+            <!-- Order Items -->
+            {% for item in cart_items %}
+            <div class="order-item">
+              {% if item['product'].category == 'shoes' %}
+              <img
+                src="https://via.placeholder.com/70x70/8B0000/FFFFFF?text={{ item['product'].name|urlencode }}"
+                alt="{{ item['product'].name }}"
+                class="order-item-image"
+              />
+              {% else %}
+              <img
+                src="https://via.placeholder.com/70x70/333333/FFFFFF?text={{ item['product'].name|urlencode }}"
+                alt="{{ item['product'].name }}"
+                class="order-item-image"
+              />
+              {% endif %}
+              <div class="order-item-info">
+                <h6>{{ item['product'].name }}</h6>
+                <p class="text-muted mb-0">Qty: {{ item['quantity'] }}</p>
+                <p class="mb-0">
+                  <strong>₹{{ "%.2f"|format(item['total_price']) }}</strong>
+                </p>
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- Summary -->
+            <div class="summary-row">
+              <span class="summary-label">Subtotal</span>
+              <span class="summary-value"
+                >₹{{ "%.2f"|format(cart_total) }}</span
+              >
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Shipping</span>
+              <span class="summary-value">
+                {% if shipping == 0 %}
+                <span class="text-success">FREE</span>
+                {% else %} ₹{{ "%.2f"|format(shipping) }} {% endif %}
+              </span>
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">Tax (10%)</span>
+              <span class="summary-value">₹{{ "%.2f"|format(tax) }}</span>
+            </div>
+
+            <div class="summary-row total-row">
+              <span class="summary-label">Total</span>
+              <span class="summary-value"
+                >₹{{ "%.2f"|format(final_total) }}</span
+              >
+            </div>
+
+            <!-- Place Order Button -->
+            <button type="submit" class="btn btn-dark place-order-btn mt-4">
+              <i class="fas fa-lock me-2"></i>Place Order
+            </button>
+
+            <div class="secure-badge">
+              <i class="fas fa-shield-alt"></i>
+              <span>Secure checkout - SSL Encrypted</span>
+            </div>
+
+            <!-- Trust Messages -->
+            <div class="mt-3 text-center">
+              <p class="text-muted small mb-1">
+                <i class="fas fa-undo me-1"></i> 30-day return policy
+              </p>
+              <p class="text-muted small mb-0">
+                <i class="fas fa-headset me-1"></i> 24/7 customer support
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %} {% block extra_js %}
+<script>
+  function selectPayment(element) {
+    // Remove selected class from all payment methods
+    document.querySelectorAll(".payment-method").forEach((pm) => {
+      pm.classList.remove("selected");
+    });
+
+    // Add selected class to clicked element
+    element.classList.add("selected");
+
+    // Check the radio input
+    const radio = element.querySelector('input[type="radio"]');
+    if (radio && !radio.disabled) {
+      radio.checked = true;
+    }
+  }
+</script>
+{% endblock %}

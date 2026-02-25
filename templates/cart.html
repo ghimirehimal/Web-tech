@@ -1,0 +1,473 @@
+{% extends "base.html" %} {% block title %}Shopping Cart - JUTTA LAGANI{%
+endblock %} {% block extra_css %}
+<style>
+  .cart-section {
+    padding: 40px 0;
+  }
+
+  .cart-header {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+      url("https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    margin-bottom: 40px;
+  }
+
+  .cart-table {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .cart-table th {
+    background: #333;
+    color: white;
+    padding: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+
+  .cart-table td {
+    padding: 20px 15px;
+    vertical-align: middle;
+  }
+
+  .cart-product {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .cart-product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    background: #f8f9fa;
+  }
+
+  .cart-product-info h5 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .cart-product-info a {
+    text-decoration: none;
+    color: #333;
+  }
+
+  .cart-product-info a:hover {
+    color: #8b0000;
+  }
+
+  .cart-product-info .text-muted {
+    font-size: 0.85rem;
+  }
+
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: fit-content;
+  }
+
+  .qty-btn {
+    width: 35px;
+    height: 35px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .qty-btn:hover {
+    background: #8b0000;
+    color: white;
+  }
+
+  .qty-value {
+    width: 50px;
+    text-align: center;
+    border: none;
+    font-weight: 600;
+  }
+
+  .remove-btn {
+    color: #dc3545;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+
+  .remove-btn:hover {
+    transform: scale(1.2);
+  }
+
+  .cart-summary {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 100px;
+  }
+
+  .summary-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #8b0000;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .summary-row:last-child {
+    border-bottom: none;
+  }
+
+  .summary-label {
+    color: #666;
+  }
+
+  .summary-value {
+    font-weight: 600;
+  }
+
+  .total-row {
+    font-size: 1.2rem;
+  }
+
+  .total-row .summary-value {
+    color: #8b0000;
+    font-size: 1.5rem;
+  }
+
+  .coupon-form {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .coupon-form .form-control {
+    border-radius: 50px;
+  }
+
+  .coupon-form .btn {
+    border-radius: 50px;
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .empty-cart-icon {
+    font-size: 5rem;
+    color: #ddd;
+    margin-bottom: 20px;
+  }
+
+  .cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #dc3545;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- Cart Header -->
+<section class="cart-header">
+  <div class="container">
+    <div class="text-center text-white">
+      <h1 class="mb-3">Shopping Cart</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center">
+          <li class="breadcrumb-item">
+            <a href="{{ url_for('index') }}" class="text-white">Home</a>
+          </li>
+          <li class="breadcrumb-item active text-white" aria-current="page">
+            Cart
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- Cart Content -->
+<section class="cart-section">
+  <div class="container">
+    {% if cart_items %}
+    <div class="row">
+      <!-- Cart Items -->
+      <div class="col-lg-8">
+        <div class="cart-table">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in cart_items %}
+              <tr>
+                <td>
+                  <div class="cart-product">
+                    {% if item['product'].category == 'shoes' %}
+                    <img
+                      src="https://via.placeholder.com/80x80/8B0000/FFFFFF?text={{ item['product'].name|urlencode }}"
+                      alt="{{ item['product'].name }}"
+                      class="cart-product-image"
+                    />
+                    {% else %}
+                    <img
+                      src="https://via.placeholder.com/80x80/333333/FFFFFF?text={{ item['product'].name|urlencode }}"
+                      alt="{{ item['product'].name }}"
+                      class="cart-product-image"
+                    />
+                    {% endif %}
+                    <div class="cart-product-info">
+                      <h5>
+                        <a
+                          href="{{ url_for('product_detail', product_id=item['product'].id) }}"
+                        >
+                          {{ item['product'].name }}
+                        </a>
+                      </h5>
+                      <p class="text-muted mb-0">
+                        {{ item['product'].category|title }}
+                      </p>
+                      {% if item.get('size') %}
+                      <p class="text-muted mb-0">
+                        Size: {{ item.get('size') }}
+                      </p>
+                      {% endif %} {% if item.get('color') %}
+                      <p class="text-muted mb-0">
+                        Color: {{ item.get('color') }}
+                      </p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-bold"
+                    >₹{{ "%.2f"|format(item['product'].price) }}</span
+                  >
+                </td>
+                <td>
+                  <div class="quantity-control">
+                    <button
+                      class="qty-btn"
+                      onclick="updateQuantity({{ item['id'] }}, -1)"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      class="qty-value"
+                      value="{{ item['quantity'] }}"
+                      onchange="updateQuantityDirect({{ item['id'] }}, this.value)"
+                      min="1"
+                      max="{{ item['product'].stock }}"
+                    />
+                    <button
+                      class="qty-btn"
+                      onclick="updateQuantity({{ item['id'] }}, 1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-bold text-danger"
+                    >₹{{ "%.2f"|format(item['total_price']) }}</span
+                  >
+                </td>
+                <td>
+                  <a
+                    href="{{ url_for('remove_from_cart', cart_item_id=item['id']) }}"
+                    class="remove-btn"
+                    title="Remove"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-4">
+          <a href="{{ url_for('shop') }}" class="btn btn-outline-dark">
+            <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+          </a>
+          <a
+            href="{{ url_for('clear_cart') }}"
+            class="btn btn-outline-danger ms-2"
+          >
+            <i class="fas fa-trash me-2"></i>Clear Cart
+          </a>
+        </div>
+      </div>
+
+      <!-- Cart Summary -->
+      <div class="col-lg-4">
+        <div class="cart-summary">
+          <h4 class="summary-title">Order Summary</h4>
+
+          <div class="summary-row">
+            <span class="summary-label"
+              >Subtotal ({{ cart_items|length }} items)</span
+            >
+            <span class="summary-value">₹{{ "%.2f"|format(cart_total) }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Shipping</span>
+            <span class="summary-value">
+              {% if shipping == 0 %}
+              <span class="text-success">FREE</span>
+              {% else %} ₹{{ "%.2f"|format(shipping) }} {% endif %}
+            </span>
+          </div>
+
+          {% if cart_total < 1000 %}
+          <div class="summary-row">
+            <span class="summary-label">Shipping Charge</span>
+            <span class="summary-value">₹{{ "%.2f"|format(shipping) }}</span>
+          </div>
+          <div class="alert alert-info small">
+            <i class="fas fa-truck me-2"></i>Add ₹{{ "%.2f"|format(1000 -
+            cart_total) }} more for FREE shipping!
+          </div>
+          {% endif %}
+
+          <div class="summary-row">
+            <span class="summary-label">Tax (10%)</span>
+            <span class="summary-value"
+              >₹{{ "%.2f"|format(cart_total * 0.10) }}</span
+            >
+          </div>
+
+          <div class="summary-row total-row">
+            <span class="summary-label">Total</span>
+            <span class="summary-value">₹{{ "%.2f"|format(final_total) }}</span>
+          </div>
+
+          <!-- Coupon Code -->
+          <div class="coupon-form">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter coupon code"
+            />
+            <button type="button" class="btn btn-outline-dark">Apply</button>
+          </div>
+
+          {% if current_user.is_authenticated %}
+          <a
+            href="{{ url_for('checkout') }}"
+            class="btn btn-dark w-100 btn-lg mt-3"
+          >
+            <i class="fas fa-lock me-2"></i>Proceed to Checkout
+          </a>
+          {% else %}
+          <a
+            href="{{ url_for('login') }}?next={{ url_for('checkout') }}"
+            class="btn btn-dark w-100 btn-lg mt-3"
+          >
+            <i class="fas fa-sign-in-alt me-2"></i>Login to Checkout
+          </a>
+          <p class="text-center text-muted small mt-2">
+            Don't have an account?
+            <a href="{{ url_for('register') }}">Register</a>
+          </p>
+          {% endif %}
+
+          <!-- Trust Badges -->
+          <div class="mt-4 text-center">
+            <div class="d-flex justify-content-center gap-3 text-muted small">
+              <span
+                ><i class="fas fa-shield-alt me-1"></i> Secure Checkout</span
+              >
+              <span><i class="fas fa-lock me-1"></i> SSL Encrypted</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% else %}
+    <!-- Empty Cart -->
+    <div class="empty-cart">
+      <div class="empty-cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+      <h3>Your cart is empty</h3>
+      <p class="text-muted">
+        Looks like you haven't added any items to your cart yet.
+      </p>
+      <a href="{{ url_for('shop') }}" class="btn btn-dark btn-lg mt-3">
+        <i class="fas fa-shopping-bag me-2"></i>Start Shopping
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %} {% block extra_js %}
+<script>
+  function updateQuantity(cartItemId, change) {
+    // This would normally use AJAX, but for simplicity we'll redirect
+    const currentQty = document.querySelector(
+      `input[onchange*="${cartItemId}"]`,
+    ).value;
+    const newQty = parseInt(currentQty) + change;
+    if (newQty > 0) {
+      updateQuantityDirect(cartItemId, newQty);
+    }
+  }
+
+  function updateQuantityDirect(cartItemId, quantity) {
+    // Create form and submit
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/update_cart/" + cartItemId;
+
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "quantity";
+    input.value = quantity;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>
+{% endblock %}

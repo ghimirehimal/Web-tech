@@ -1,0 +1,400 @@
+{% extends "base.html" %} {% block title %}My Profile - JUTTA LAGANI{% endblock
+%} {% block extra_css %}
+<style>
+  .profile-section {
+    padding: 40px 0;
+  }
+
+  .profile-header {
+    background:
+      linear-gradient(rgba(139, 0, 0, 0.8), rgba(212, 175, 55, 0.8)),
+      url("https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    margin-bottom: 40px;
+  }
+
+  .profile-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b0000, #d4af37);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+    margin: 0 auto 20px;
+  }
+
+  .profile-name {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .profile-name h3 {
+    margin-bottom: 5px;
+  }
+
+  .profile-name .badge {
+    font-size: 0.8rem;
+  }
+
+  .nav-pills-custom .nav-link {
+    color: #333;
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin-bottom: 5px;
+  }
+
+  .nav-pills-custom .nav-link.active {
+    background: #8b0000;
+    color: white;
+  }
+
+  .nav-pills-custom .nav-link i {
+    margin-right: 10px;
+  }
+
+  .form-label {
+    font-weight: 500;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    padding: 12px 15px;
+  }
+
+  .order-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+  }
+
+  .order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .order-header {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .order-number {
+    font-weight: 600;
+  }
+
+  .order-status {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .status-pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .status-processing {
+    background: #cce5ff;
+    color: #004085;
+  }
+
+  .status-shipped {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .status-delivered {
+    background: #d1ecf1;
+    color: #0c5460;
+  }
+
+  .status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+  }
+
+  .order-body {
+    padding: 20px;
+  }
+
+  .order-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .order-item:last-child {
+    border-bottom: none;
+  }
+
+  .order-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .order-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .order-total {
+    font-weight: 700;
+    color: #8b0000;
+    font-size: 1.2rem;
+  }
+</style>
+{% endblock %} {% block content %}
+<!-- Profile Header -->
+<section class="profile-header">
+  <div class="container">
+    <div class="text-center text-white">
+      <div class="profile-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h2>Welcome, {{ current_user.username }}!</h2>
+      <p class="mb-0">{{ current_user.email }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Profile Content -->
+<section class="profile-section">
+  <div class="container">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-lg-3">
+        <div class="profile-card">
+          <div class="profile-name">
+            <h4>{{ current_user.full_name or current_user.username }}</h4>
+            <p class="text-muted mb-0">{{ current_user.email }}</p>
+            {% if current_user.is_admin %}
+            <span class="badge bg-warning text-dark mt-2">Administrator</span>
+            {% endif %}
+          </div>
+
+          <div class="nav flex-column nav-pills-custom">
+            <a class="nav-link active" href="#profile" data-bs-toggle="pill">
+              <i class="fas fa-user"></i> My Profile
+            </a>
+            <a class="nav-link" href="#orders" data-bs-toggle="pill">
+              <i class="fas fa-box"></i> My Orders
+            </a>
+            <a class="nav-link" href="#address" data-bs-toggle="pill">
+              <i class="fas fa-map-marker-alt"></i> Addresses
+            </a>
+            <a class="nav-link" href="#settings" data-bs-toggle="pill">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+            <a class="nav-link text-danger" href="{{ url_for('logout') }}">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-lg-9">
+        <div class="tab-content">
+          <!-- Profile Tab -->
+          <div class="tab-pane fade show active" id="profile">
+            <div class="profile-card">
+              <h4 class="mb-4">Edit Profile</h4>
+              <form method="POST" action="{{ url_for('profile') }}">
+                {{ form.hidden_tag() }}
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Username</label>
+                    {{ form.username(class="form-control") }}
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Email Address</label>
+                    {{ form.email(class="form-control") }}
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Full Name</label>
+                    {{ form.full_name(class="form-control") }}
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone(class="form-control") }}
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Address</label>
+                  {{ form.address(class="form-control", rows="3") }}
+                </div>
+
+                <button type="submit" class="btn btn-dark">
+                  <i class="fas fa-save me-2"></i>Save Changes
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Orders Tab -->
+          <div class="tab-pane fade" id="orders">
+            <h4 class="mb-4">My Orders</h4>
+
+            {% if recent_orders %} {% for order in recent_orders %}
+            <div class="order-card">
+              <div class="order-header">
+                <span class="order-number">{{ order.order_number }}</span>
+                <span class="order-status status-{{ order.status }}"
+                  >{{ order.status|title }}</span
+                >
+              </div>
+              <div class="order-body">
+                {% for item in order.items %}
+                <div class="order-item">
+                  <img
+                    src="https://via.placeholder.com/60x60/333333/FFFFFF?text=Item"
+                    alt="{{ item.product_name }}"
+                    class="order-item-img"
+                  />
+                  <div>
+                    <h6 class="mb-0">{{ item.product_name }}</h6>
+                    <p class="text-muted mb-0">
+                      Qty: {{ item.quantity }} × ₹{{
+                      "%.2f"|format(item.unit_price) }}
+                    </p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="order-footer">
+                <span class="text-muted"
+                  >{{ order.created_at.strftime('%B %d, %Y') }}</span
+                >
+                <span class="order-total"
+                  >₹{{ "%.2f"|format(order.total_amount) }}</span
+                >
+              </div>
+            </div>
+            {% endfor %}
+
+            <a
+              href="{{ url_for('my_orders') }}"
+              class="btn btn-outline-dark mt-3"
+            >
+              View All Orders <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+            {% else %}
+            <div class="text-center py-5">
+              <i class="fas fa-shopping-bag display-4 text-muted mb-3"></i>
+              <h5>No orders yet</h5>
+              <p class="text-muted">Start shopping to see your orders here!</p>
+              <a href="{{ url_for('shop') }}" class="btn btn-dark">Shop Now</a>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Address Tab -->
+          <div class="tab-pane fade" id="address">
+            <div class="profile-card">
+              <h4 class="mb-4">Saved Addresses</h4>
+
+              {% if current_user.address %}
+              <div class="border rounded p-3 mb-3">
+                <h6>Default Address</h6>
+                <p class="mb-0 text-muted">{{ current_user.address }}</p>
+              </div>
+              {% else %}
+              <p class="text-muted">
+                No address saved yet. Update your profile to add an address.
+              </p>
+              {% endif %}
+
+              <button
+                class="btn btn-outline-dark"
+                onclick="
+                  $('#profile a[data-bs-toggle=pill]').first().tab('show');
+                  $('#address').hide();
+                "
+              >
+                <i class="fas fa-plus me-2"></i>Add New Address
+              </button>
+            </div>
+          </div>
+
+          <!-- Settings Tab -->
+          <div class="tab-pane fade" id="settings">
+            <div class="profile-card">
+              <h4 class="mb-4">Account Settings</h4>
+
+              <div class="mb-4">
+                <h6>Notification Preferences</h6>
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="emailNotif"
+                    checked
+                  />
+                  <label class="form-check-label" for="emailNotif"
+                    >Email notifications for orders</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="smsNotif"
+                  />
+                  <label class="form-check-label" for="smsNotif"
+                    >SMS notifications</label
+                  >
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <h6>Change Password</h6>
+                <button class="btn btn-outline-dark">Change Password</button>
+              </div>
+
+              <hr />
+
+              <div>
+                <h6 class="text-danger">Danger Zone</h6>
+                <button class="btn btn-outline-danger">Delete Account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

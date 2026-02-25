@@ -1,0 +1,249 @@
+/**
+ * JUTTA LAGANI - Responsive Stylesheet
+ * Mobile-First Responsive Design
+ */
+
+/* ============================================
+   EXTRA SMALL DEVICES (Phones < 576px)
+   ============================================ */
+@media (max-width: 575.98px) {
+    /* Typography */
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+    }
+    
+    /* Navbar */
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+    
+    .navbar-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .search-form {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .search-form .form-control {
+        font-size: 0.9rem;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        height: 60vh;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    /* Product Cards */
+    .product-image {
+        height: 200px;
+    }
+    
+    .product-info {
+        padding: 1rem;
+    }
+    
+    .product-title {
+        font-size: 0.95rem;
+    }
+    
+    .current-price {
+        font-size: 1rem;
+    }
+    
+    /* Cart */
+    .cart-product-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .cart-table th,
+    .cart-table td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+    
+    /* Forms */
+    .form-control, .form-select {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    
+    /* Footer */
+    .footer {
+        text-align: center;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .contact-info {
+        text-align: left;
+    }
+}
+
+/* ============================================
+   SMALL DEVICES (Landscape Phones 576px - 767px)
+   ============================================ */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    .hero-section {
+        height: 70vh;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .product-image {
+        height: 220px;
+    }
+    
+    .search-form {
+        max-width: 300px;
+    }
+}
+
+/* ============================================
+   MEDIUM DEVICES (Tablets 768px - 991px)
+   ============================================ */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .hero-section {
+        height: 75vh;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .product-image {
+        height: 250px;
+    }
+    
+    .filter-sidebar {
+        margin-bottom: 30px;
+    }
+    
+    /* Admin */
+    .stats-card {
+        margin-bottom: 15px;
+    }
+}
+
+/* ============================================
+   LARGE DEVICES (Desktops 992px - 1199px)
+   ============================================ */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .hero-title {
+        font-size: 3.5rem;
+    }
+    
+    .product-image {
+        height: 280px;
+    }
+}
+
+/* ============================================
+   EXTRA LARGE DEVICES (Large Desktops >= 1200px)
+   ============================================ */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+/* Display utilities for mobile */
+@media (max-width: 767.98px) {
+    .d-none-mobile {
+        display: none !important;
+    }
+    
+    .text-center-mobile {
+        text-align: center !important;
+    }
+    
+    .mb-mobile-3 {
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* Touch-friendly targets for mobile */
+@media (max-width: 767.98px) {
+    .btn,
+    .nav-link,
+    .dropdown-item,
+    .product-action-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Larger touch targets for form elements */
+    .form-control,
+    .form-select,
+    .btn {
+        min-height: 44px;
+    }
+    
+    /* Swipeable elements */
+    .swipe-element {
+        touch-action: pan-y pinch-zoom;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .navbar,
+    .footer,
+    .btn,
+    .product-actions,
+    .flash-messages {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
