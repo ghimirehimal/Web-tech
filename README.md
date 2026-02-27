@@ -29,13 +29,19 @@ JUTTA LAGANI is a Flask-based e-commerce platform for ethnic footwear and clothi
 - Admin dashboard and product/order management
 - Responsive UI for desktop and mobile screens
 
+## Product Catalog Snapshot
+- Total seeded products: 42
+- Shoes products: 21
+- Clothing products: 21
+- Product cards display internet-hosted photos with fallback support
+
 ## Latest Fixes (February 27, 2026)
 - Landing page featured products now show 5 items at a time.
 - Navigation links for Home, Shop, Categories, About, and Contact are wired correctly.
 - Contact form now handles POST submission and returns a success flash message.
-- Product image rendering now uses local static images with safe fallbacks, reducing external image dependency.
+- Product image rendering now supports internet image URLs and safe local fallback images.
 - Placeholder images were removed across key pages (home, shop, product detail, cart, checkout, wishlist, orders, profile, admin products).
-- Product seed data was expanded and now includes additional shoes and clothing products.
+- Product seed data now includes 42 products total (21 shoes + 21 clothing), including 20 newly added items.
 - Startup and seed flows were hardened so products reliably appear after app start/deploy.
 
 ## Tech Stack
@@ -125,87 +131,57 @@ This repository is now prepared for Render with:
 ## Screenshots (Mandatory)
 All screenshots are stored in the `ss/` folder and embedded below.
 
-### Desktop Screenshots
+### Latest Desktop Screenshots (Updated Catalog)
 
-#### 1. Homepage - Hero Section
-![Homepage Hero](ss/Screenshot%202026-02-27%20142456.png)
+#### 1. Homepage
+![Homepage Desktop](ss/desktop_home_latest.png)
 
-#### 2. Homepage - Category Section
-![Homepage Categories](ss/Screenshot%202026-02-27%20142507.png)
+#### 2. Shop - All Products
+![Shop All Desktop](ss/desktop_shop_all_latest.png)
 
-#### 3. Homepage - Service Highlights and Featured Products
-![Homepage Services Featured](ss/Screenshot%202026-02-27%20142520.png)
+#### 3. Shop - Shoes Category
+![Shop Shoes Desktop](ss/desktop_shop_shoes_latest.png)
 
-#### 4. Homepage - Why Choose Section
-![Homepage Why Choose](ss/Screenshot%202026-02-27%20142533.png)
+#### 4. Shop - Clothing Category
+![Shop Clothing Desktop](ss/desktop_shop_clothing_latest.png)
 
-#### 5. Homepage - Newsletter Section
-![Homepage Newsletter](ss/Screenshot%202026-02-27%20142543.png)
+#### 5. Product Detail - Shoe
+![Product Shoe Desktop](ss/desktop_product_shoe_latest.png)
 
-#### 6. Homepage - Footer Section
-![Homepage Footer](ss/Screenshot%202026-02-27%20142550.png)
+#### 6. Product Detail - Clothing
+![Product Clothing Desktop](ss/desktop_product_clothing_latest.png)
 
-#### 7. Shop Page
-![Shop Page Desktop](ss/Screenshot%202026-02-27%20142601.png)
+#### 7. About Page
+![About Desktop](ss/desktop_about_latest.png)
 
-#### 8. About Page
-![About Page Desktop](ss/Screenshot%202026-02-27%20142619.png)
+#### 8. Contact Page
+![Contact Desktop](ss/desktop_contact_latest.png)
 
-#### 9. Contact Page
-![Contact Page Desktop](ss/Screenshot%202026-02-27%20142626.png)
+#### 9. Login Page
+![Login Desktop](ss/desktop_login_latest.png)
 
-#### 10. My Orders Page
-![My Orders Desktop](ss/Screenshot%202026-02-27%20142638.png)
+#### 10. Admin Dashboard
+![Admin Dashboard Desktop](ss/desktop_admin_dashboard_latest.png)
 
-#### 11. Wishlist Page
-![Wishlist Desktop](ss/Screenshot%202026-02-27%20142646.png)
+#### 11. Admin Products
+![Admin Products Desktop](ss/desktop_admin_products_latest.png)
 
-#### 12. User Account Dropdown Menu
-![User Menu Desktop](ss/Screenshot%202026-02-27%20142655.png)
+### Latest Mobile Responsive Screenshots
 
-#### 13. Admin Dashboard
-![Admin Dashboard Desktop](ss/Screenshot%202026-02-27%20142703.png)
+#### 12. Mobile Homepage
+![Mobile Home](ss/mobile_home_latest.png)
 
-#### 14. Admin Products Page
-![Admin Products Desktop](ss/Screenshot%202026-02-27%20142716.png)
+#### 13. Mobile Shop - Shoes
+![Mobile Shop Shoes](ss/mobile_shop_shoes_latest.png)
 
-#### 15. Admin Add Product - Top Form Section
-![Admin Add Product Top](ss/Screenshot%202026-02-27%20142724.png)
+#### 14. Mobile Shop - Clothing
+![Mobile Shop Clothing](ss/mobile_shop_clothing_latest.png)
 
-#### 16. Admin Add Product - Bottom Form Section
-![Admin Add Product Bottom](ss/Screenshot%202026-02-27%20142731.png)
+#### 15. Mobile Contact
+![Mobile Contact](ss/mobile_contact_latest.png)
 
-### Mobile Responsive Screenshots
-
-#### 17. Mobile Homepage - Hero
-![Mobile Homepage Hero](ss/Screenshot%202026-02-27%20142829.png)
-
-#### 18. Mobile Homepage - Categories
-![Mobile Homepage Categories](ss/Screenshot%202026-02-27%20142835.png)
-
-#### 19. Mobile Homepage - Service Highlights
-![Mobile Homepage Services](ss/Screenshot%202026-02-27%20142840.png)
-
-#### 20. Mobile Homepage - Why Choose Section
-![Mobile Homepage Why Choose](ss/Screenshot%202026-02-27%20142846.png)
-
-#### 21. Mobile Homepage - Newsletter and Footer Top
-![Mobile Homepage Newsletter](ss/Screenshot%202026-02-27%20142850.png)
-
-#### 22. Mobile Footer - Quick Links and Contact
-![Mobile Footer Contact](ss/Screenshot%202026-02-27%20142855.png)
-
-#### 23. Mobile Shop Page
-![Mobile Shop Page](ss/Screenshot%202026-02-27%20142903.png)
-
-#### 24. Mobile Contact Page
-![Mobile Contact Page](ss/Screenshot%202026-02-27%20142917.png)
-
-#### 25. Mobile Navigation Menu
-![Mobile Navigation Menu](ss/Screenshot%202026-02-27%20142926.png)
-
-#### 26. Mobile Admin Dashboard
-![Mobile Admin Dashboard](ss/Screenshot%202026-02-27%20142934.png)
+#### 16. Mobile Navigation Open
+![Mobile Nav Open](ss/mobile_nav_open_latest.png)
 
 ## Submission Checklist
 - Public GitHub repository provided
