@@ -17,7 +17,7 @@ from wtforms import StringField, PasswordField, TextAreaField, SelectField, Floa
 from wtforms.validators import DataRequired, Email, Length, EqualTo, Optional, NumberRange
 from werkzeug.utils import secure_filename
 from sqlalchemy import func, desc
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import random
 import string
@@ -137,7 +137,7 @@ def create_app(config_class=Config):
             DataRequired(),
             NumberRange(min=0, message='Stock must be positive')
         ])
-        is_available = BooleanField('Available for Sale')
+        is_available = BooleanField('Available for Sale', default=True)
     
     class CheckoutForm(FlaskForm):
         """Checkout Form"""
@@ -259,7 +259,9 @@ def create_app(config_class=Config):
                              featured_products=featured_products,
                              new_arrivals=new_arrivals,
                              shoes_count=shoes_count,
-                             clothing_count=clothing_count)
+                             clothing_count=clothing_count,
+                             datetime=datetime,
+                             timedelta=timedelta)
     
     @app.route('/about')
     def about():
@@ -850,6 +852,8 @@ def create_app(config_class=Config):
             return redirect(url_for('index'))
         
         form = ProductForm()
+        if request.method == 'GET':
+            form.is_available.data = True
         
         if form.validate_on_submit():
             product = Product(
@@ -998,62 +1002,12 @@ def create_app(config_class=Config):
                              error_message='Internal server error'), 500
     
     # ============================================================
-    # CLI COMMANDS
+    # DATA SEEDING HELPERS
     # ============================================================
     
-    @app.cli.command('init-db')
-    def init_db_command():
-        """Initialize the database with sample data"""
-        db.create_all()
-        
-        # Check if data already exists
-        if User.query.first():
-            print('Database already initialized!')
-            return
-        
-        # Create admin user
-        admin = User(
-            username='admin',
-            email='admin@jutta-lagani.com',
-            full_name='Admin User',
-            is_admin=True
-        )
-        admin.set_password('admin123')
-        db.session.add(admin)
-        db.session.commit()
-
-        print('Database initialized successfully!')
-        print('Admin login: admin@jutta-lagani.com / admin123')
-    
-    @app.cli.command('create-master-admin')
-    def create_master_admin():
-        """Create master admin user"""
-        db.create_all()
-        
-        # Check if master admin already exists
-        existing = User.query.filter_by(email='ghimirehimal72@gmail.com').first()
-        if existing:
-            print('Master admin already exists!')
-            return
-        
-        # Create master admin
-        master_admin = User(
-            username='master_admin',
-            email='ghimirehimal72@gmail.com',
-            full_name='Master Admin',
-            is_admin=True,
-            is_master_admin=True
-        )
-        master_admin.set_password('Prasad@06128@$')
-        db.session.add(master_admin)
-        db.session.commit()
-        
-        print('Master admin created successfully!')
-        print('Email: ghimirehimal72@gmail.com')
-        print('Password: Prasad@06128@$')
-        
-        # Create sample products - Shoes
-        shoes_products = [
+    def _build_sample_products():
+        """Build the default sample products list."""
+        return [
             Product(
                 name='Traditional Mojari',
                 description='Handcrafted leather mojaris with traditional embroidery. Perfect for weddings and festive occasions.',
@@ -1127,10 +1081,6 @@ def create_app(config_class=Config):
                 is_available=True,
                 image='shoe5.jpg'
             ),
-        ]
-        
-        # Create sample products - Clothing
-        clothing_products = [
             Product(
                 name='Kurta Set - Festive',
                 description='Beautiful kurta set with dupatta. Perfect for festive occasions.',
@@ -1206,15 +1156,98 @@ def create_app(config_class=Config):
                 image='cloth5.jpg'
             ),
         ]
+    
+    def seed_sample_products():
+        """
+        Insert sample products defined in code if they are missing.
+        Uses product name uniqueness to keep the operation idempotent.
+        """
+        existing_names = {name for (name,) in db.session.query(Product.name).all()}
+        products_to_add = [
+            product for product in _build_sample_products()
+            if product.name not in existing_names
+        ]
         
-        # Add all products to database
-        for product in shoes_products + clothing_products:
+        for product in products_to_add:
             db.session.add(product)
         
-        db.session.commit()
+        if products_to_add:
+            db.session.commit()
         
-        print('Database initialized with sample data!')
-        print('Admin login: admin@jutta-lagani.com / admin123')
+        return len(products_to_add)
+    
+    # ============================================================
+    # CLI COMMANDS
+    # ============================================================
+    
+    @app.cli.command('init-db')
+    def init_db_command():
+        """Initialize database tables, default admin, and sample products."""
+        db.create_all()
+        
+        admin = User.query.filter_by(email='admin@jutta-lagani.com').first()
+        if not admin:
+            admin = User(
+                username='admin',
+                email='admin@jutta-lagani.com',
+                full_name='Admin User',
+                is_admin=True
+            )
+            admin.set_password('admin123')
+            db.session.add(admin)
+            db.session.commit()
+            print('Default admin created: admin@jutta-lagani.com / admin123')
+        else:
+            print('Default admin already exists.')
+        
+        added_count = seed_sample_products()
+        if added_count:
+            print(f'Added {added_count} sample products.')
+        else:
+            print('Sample products already up to date.')
+    
+    @app.cli.command('seed-products')
+    def seed_products_command():
+        """Insert sample products if missing."""
+        db.create_all()
+        added_count = seed_sample_products()
+        if added_count:
+            print(f'Added {added_count} sample products.')
+        else:
+            print('No new sample products were added.')
+    
+    @app.cli.command('create-master-admin')
+    def create_master_admin():
+        """Create master admin user and ensure sample products exist."""
+        db.create_all()
+        
+        existing = User.query.filter_by(email='ghimirehimal72@gmail.com').first()
+        if existing:
+            print('Master admin already exists!')
+        else:
+            master_admin = User(
+                username='master_admin',
+                email='ghimirehimal72@gmail.com',
+                full_name='Master Admin',
+                is_admin=True,
+                is_master_admin=True
+            )
+            master_admin.set_password('Prasad@06128@$')
+            db.session.add(master_admin)
+            db.session.commit()
+            
+            print('Master admin created successfully!')
+            print('Email: ghimirehimal72@gmail.com')
+            print('Password: Prasad@06128@$')
+        
+        added_count = seed_sample_products()
+        if added_count:
+            print(f'Added {added_count} sample products.')
+        else:
+            print('Sample products already up to date.')
+    
+    # Expose helper for startup scripts (wsgi/main entrypoint).
+    app.seed_sample_products = seed_sample_products
     
     return app
 
@@ -1229,6 +1262,7 @@ if __name__ == '__main__':
     # Create database tables
     with app.app_context():
         db.create_all()
+        app.seed_sample_products()
     
     # Run the application
     port = int(os.environ.get('PORT', 5000))
