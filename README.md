@@ -1,197 +1,188 @@
 # JUTTA LAGANI - E-Commerce Fashion Website
 
-![JUTTA LAGANI](https://via.placeholder.com/1200x400/8B0000/FFFFFF?text=JUTTA+LAGANI)
+## GitHub Repository (Mandatory)
+Repository URL: https://github.com/ghimirehimal/Web-tech
 
-Modern Ethno-Urban Fashion E-Commerce Website built with Flask, Bootstrap 5, and modern web technologies.
+## Live Deployment URL (Mandatory)
+Deployed Website URL: Add your working public deployment URL here
+Local Development URL: http://127.0.0.1:5000
 
-## 📋 Project Overview
+## Project Overview
+JUTTA LAGANI is a Flask-based e-commerce platform for ethnic footwear and clothing. It includes customer flows (browse, cart, checkout, profile, wishlist, orders) and admin flows (dashboard, products, orders, product management).
 
-**JUTTA LAGANI** is a full-featured e-commerce platform specializing in ethnic footwear (shoes) and clothing with a modern ethno-urban fusion theme. The application includes complete shopping functionality, user authentication, admin panel, and responsive design.
+## Academic Integrity and External Resources
+- This project submission is original coursework.
+- No copied template project has been used as final submission.
+- External references used for learning/implementation:
+  - Flask documentation: https://flask.palletsprojects.com/
+  - Flask-Login documentation: https://flask-login.readthedocs.io/
+  - Flask-SQLAlchemy documentation: https://flask-sqlalchemy.palletsprojects.com/
+  - Bootstrap documentation: https://getbootstrap.com/docs/5.0/getting-started/introduction/
+  - Font Awesome icons: https://fontawesome.com/
 
-### Key Features
+## Core Features
+- User registration, login, logout, and profile management
+- Product browsing by category (shoes, clothing)
+- Wishlist and shopping cart functionality
+- Checkout and order placement flow
+- User order history and order detail views
+- Admin dashboard and product/order management
+- Responsive UI for desktop and mobile screens
 
-- 🛍️ **Product Catalog** - Browse shoes and clothing with categories, filtering, and search
-- 👤 **User Authentication** - Registration, login, logout with session management
-- 🛒 **Shopping Cart** - Add/remove items, quantity management
-- 💳 **Checkout System** - Order placement with address and payment selection
-- 👑 **Admin Panel** - Product management, order management, dashboard
-- 📱 **Responsive Design** - Works on mobile, tablet, and desktop
-- 🎨 **Modern UI** - Beautiful Bootstrap 5 design with custom styling
+## Tech Stack
+- Backend: Python, Flask, Flask-SQLAlchemy, Flask-Login, Flask-Bcrypt
+- Frontend: HTML, CSS, JavaScript, Bootstrap 5, Jinja2
+- Database: SQLite
 
-## 🛠️ Technology Stack
-
-### Frontend
-- HTML5
-- CSS3 (Custom + Bootstrap 5)
-- JavaScript (jQuery)
-- Bootstrap 5
-
-### Backend
-- Python 3.x
-- Flask Framework
-- Flask-SQLAlchemy
-- Flask-Login
-- Flask-Bcrypt
-- Jinja2 Templating
-
-### Database
-- SQLite (default)
-
-## 📁 Project Structure
-
-```
-JUTTA_LAGANI/
-├── app.py                  # Main Flask application
-├── config.py               # Configuration settings
-├── models.py               # Database models
-├── requirements.txt        # Python dependencies
-├── README.md               # Project documentation
-├── templates/              # HTML templates
-│   ├── base.html           # Base template
-│   ├── index.html          # Home page
-│   ├── shop.html           # Product listing
-│   ├── product_detail.html # Product details
-│   ├── cart.html           # Shopping cart
-│   ├── checkout.html       # Checkout page
-│   ├── login.html          # Login page
-│   ├── register.html       # Registration page
-│   ├── profile.html        # User profile
-│   ├── admin_dashboard.html # Admin dashboard
-│   ├── admin_products.html # Admin products
-│   ├── admin_product_add.html # Add/Edit product
-│   └── ...                 # Other templates
-└── static/                 # Static files
-    ├── css/
-    │   ├── style.css       # Main styles
-    │   └── responsive.css  # Responsive styles
-    └── js/
-        ├── main.js         # Main JavaScript
-        └── validation.js   # Form validation
+## Project Structure
+```text
+Assignment Python Code/
+|- app.py
+|- config.py
+|- models.py
+|- requirements.txt
+|- README.md
+|- templates/
+|- static/
+|- instance/
+`- ss/
 ```
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.8 or higher
-- pip (Python package manager)
-
-### Installation
-
-1. **Clone the repository**
-   
-```
-bash
-   git clone <repository-url>
-   cd JUTTA_LAGANI
-   
+## Setup and Run Instructions
+1. Clone repository
+```bash
+git clone https://github.com/ghimirehimal/Web-tech.git
+cd "Assignment Python Code"
 ```
 
-2. **Create virtual environment**
-   
-```
-bash
-   python -m venv venv
-   
+2. Create and activate virtual environment
+```bash
+python -m venv venv
+venv\Scripts\activate
 ```
 
-3. **Activate virtual environment**
-   - Windows: `venv\Scripts\activate`
-   - Linux/Mac: `source venv/bin/activate`
-
-4. **Install dependencies**
-   
-```
-bash
-   pip install -r requirements.txt
-   
+3. Install dependencies
+```bash
+pip install -r requirements.txt
 ```
 
-5. **Initialize the database**
-   
-```
-bash
-   flask init-db
-   
-```
-   Or run:
-   
-```
-bash
-   python -c "from app import create_app, db; app = create_app(); app.app_context().push(); db.create_all()"
-   
+4. Run the application
+```bash
+python app.py
 ```
 
-6. **Run the application**
-   
-```
-bash
-   python app.py
-   
+5. Open browser
+```text
+http://127.0.0.1:5000
 ```
 
-7. **Open in browser**
-   Navigate to: `http://localhost:5000`
+## Admin Login
+- Email: admin@jutta-lagani.com
+- Password: admin123
 
-### Default Admin Credentials
+## Testing Notes
+- Validate all major user flows: register/login, browse, cart, checkout, orders
+- Validate admin flows: dashboard, products, add/edit/delete product, orders
+- Test responsive layout on mobile viewport
+- Test in multiple browsers before final submission
 
-After running `flask init-db`:
-- Email: `admin@jutta-lagani.com`
-- Password: `admin123`
+## Version Control Status
+- Git is used for version control with `.gitignore` included.
+- Assignment requires 15-20 commits with clear development history.
+- Current branch history should be increased to meet final submission requirement.
 
-## 📱 Pages
+## Screenshots (Mandatory)
+All screenshots are stored in the `ss/` folder and embedded below.
 
-### Customer Pages
-1. **Home** (`/`) - Hero section, featured products, categories
-2. **Shop** (`/shop`) - Product listing with filters
-3. **Product Details** (`/product/<id>`) - Single product view
-4. **Cart** (`/cart`) - Shopping cart
-5. **Checkout** (`/checkout`) - Order placement
-6. **Login** (`/login`) - User login
-7. **Register** (`/register`) - User registration
-8. **Profile** (`/profile`) - User account
-9. **My Orders** (`/my_orders`) - Order history
-10. **About** (`/about`) - About page
-11. **Contact** (`/contact`) - Contact page
+### Desktop Screenshots
 
-### Admin Pages
-1. **Dashboard** (`/admin`) - Statistics and overview
-2. **Products** (`/admin/products`) - Product listing
-3. **Add Product** (`/admin/product/add`) - Add new product
-4. **Edit Product** (`/admin/product/edit/<id>`) - Edit product
-5. **Orders** (`/admin/orders`) - Order management
+#### 1. Homepage - Hero Section
+![Homepage Hero](ss/Screenshot%202026-02-27%20142456.png)
 
-## 🎨 Design
+#### 2. Homepage - Category Section
+![Homepage Categories](ss/Screenshot%202026-02-27%20142507.png)
 
-### Color Scheme
-- Primary: Deep Maroon (#8B0000)
-- Secondary: Gold (#D4AF37)
-- Accent: Charcoal (#333333)
-- Background: Off-white (#F5F5F5)
+#### 3. Homepage - Service Highlights and Featured Products
+![Homepage Services Featured](ss/Screenshot%202026-02-27%20142520.png)
 
-### Typography
-- Headings: Playfair Display
-- Body: Roboto
+#### 4. Homepage - Why Choose Section
+![Homepage Why Choose](ss/Screenshot%202026-02-27%20142533.png)
 
-## 🔧 Configuration
+#### 5. Homepage - Newsletter Section
+![Homepage Newsletter](ss/Screenshot%202026-02-27%20142543.png)
 
-Edit `config.py` to customize:
-- Database URI
-- Secret key
-- Upload folder
-- Session settings
+#### 6. Homepage - Footer Section
+![Homepage Footer](ss/Screenshot%202026-02-27%20142550.png)
 
-## 📝 License
+#### 7. Shop Page
+![Shop Page Desktop](ss/Screenshot%202026-02-27%20142601.png)
 
-This project is for educational purposes.
+#### 8. About Page
+![About Page Desktop](ss/Screenshot%202026-02-27%20142619.png)
 
-## 👨‍💻 Author
+#### 9. Contact Page
+![Contact Page Desktop](ss/Screenshot%202026-02-27%20142626.png)
 
-Developed for JUTTA LAGANI - Modern Ethno-Urban Fashion Brand
+#### 10. My Orders Page
+![My Orders Desktop](ss/Screenshot%202026-02-27%20142638.png)
 
-## 🙏 Acknowledgments
+#### 11. Wishlist Page
+![Wishlist Desktop](ss/Screenshot%202026-02-27%20142646.png)
 
-- Bootstrap 5
-- Flask Documentation
-- Font Awesome
-- Google Fonts
+#### 12. User Account Dropdown Menu
+![User Menu Desktop](ss/Screenshot%202026-02-27%20142655.png)
+
+#### 13. Admin Dashboard
+![Admin Dashboard Desktop](ss/Screenshot%202026-02-27%20142703.png)
+
+#### 14. Admin Products Page
+![Admin Products Desktop](ss/Screenshot%202026-02-27%20142716.png)
+
+#### 15. Admin Add Product - Top Form Section
+![Admin Add Product Top](ss/Screenshot%202026-02-27%20142724.png)
+
+#### 16. Admin Add Product - Bottom Form Section
+![Admin Add Product Bottom](ss/Screenshot%202026-02-27%20142731.png)
+
+### Mobile Responsive Screenshots
+
+#### 17. Mobile Homepage - Hero
+![Mobile Homepage Hero](ss/Screenshot%202026-02-27%20142829.png)
+
+#### 18. Mobile Homepage - Categories
+![Mobile Homepage Categories](ss/Screenshot%202026-02-27%20142835.png)
+
+#### 19. Mobile Homepage - Service Highlights
+![Mobile Homepage Services](ss/Screenshot%202026-02-27%20142840.png)
+
+#### 20. Mobile Homepage - Why Choose Section
+![Mobile Homepage Why Choose](ss/Screenshot%202026-02-27%20142846.png)
+
+#### 21. Mobile Homepage - Newsletter and Footer Top
+![Mobile Homepage Newsletter](ss/Screenshot%202026-02-27%20142850.png)
+
+#### 22. Mobile Footer - Quick Links and Contact
+![Mobile Footer Contact](ss/Screenshot%202026-02-27%20142855.png)
+
+#### 23. Mobile Shop Page
+![Mobile Shop Page](ss/Screenshot%202026-02-27%20142903.png)
+
+#### 24. Mobile Contact Page
+![Mobile Contact Page](ss/Screenshot%202026-02-27%20142917.png)
+
+#### 25. Mobile Navigation Menu
+![Mobile Navigation Menu](ss/Screenshot%202026-02-27%20142926.png)
+
+#### 26. Mobile Admin Dashboard
+![Mobile Admin Dashboard](ss/Screenshot%202026-02-27%20142934.png)
+
+## Submission Checklist
+- Public GitHub repository provided
+- README.md included with setup steps
+- Screenshots included in README and labeled
+- Mobile responsive screenshots included
+- Deployment URL section included (update with live URL)
+- Ready to include repository URL on documentation cover page
+
+## Author
+Himal Ghimire

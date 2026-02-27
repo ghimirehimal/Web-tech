@@ -1008,7 +1008,7 @@ def create_app(config_class=Config):
         
         # Check if data already exists
         if User.query.first():
-            flash('Database already initialized!', 'info')
+            print('Database already initialized!')
             return
         
         # Create admin user
@@ -1020,6 +1020,10 @@ def create_app(config_class=Config):
         )
         admin.set_password('admin123')
         db.session.add(admin)
+        db.session.commit()
+
+        print('Database initialized successfully!')
+        print('Admin login: admin@jutta-lagani.com / admin123')
     
     @app.cli.command('create-master-admin')
     def create_master_admin():
@@ -1211,7 +1215,6 @@ def create_app(config_class=Config):
         
         print('Database initialized with sample data!')
         print('Admin login: admin@jutta-lagani.com / admin123')
-        flash('Database initialized with sample data!', 'success')
     
     return app
 
