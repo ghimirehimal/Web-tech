@@ -4,7 +4,7 @@
 Repository URL: https://github.com/ghimirehimal/Web-tech
 
 ## Live Deployment URL (Mandatory)
-Deployed Website URL: Add your working public deployment URL here
+Deployed Website URL: Add your Render public URL here (example: https://jutta-lagani-web.onrender.com)
 Local Development URL: http://127.0.0.1:5000
 
 ## Project Overview
@@ -32,7 +32,7 @@ JUTTA LAGANI is a Flask-based e-commerce platform for ethnic footwear and clothi
 ## Tech Stack
 - Backend: Python, Flask, Flask-SQLAlchemy, Flask-Login, Flask-Bcrypt
 - Frontend: HTML, CSS, JavaScript, Bootstrap 5, Jinja2
-- Database: SQLite
+- Database: SQLite (local), PostgreSQL (Render production)
 
 ## Project Structure
 ```text
@@ -40,7 +40,10 @@ Assignment Python Code/
 |- app.py
 |- config.py
 |- models.py
+|- wsgi.py
 |- requirements.txt
+|- Procfile
+|- render.yaml
 |- README.md
 |- templates/
 |- static/
@@ -75,6 +78,25 @@ python app.py
 ```text
 http://127.0.0.1:5000
 ```
+
+## Render Deployment (Production)
+This repository is now prepared for Render with:
+- `wsgi.py` production entrypoint
+- `Procfile` using Gunicorn (`wsgi:app`)
+- `render.yaml` blueprint for web service + PostgreSQL
+- PostgreSQL driver included in `requirements.txt`
+
+### Deploy Steps on Render
+1. Push latest code to GitHub (already done).
+2. In Render dashboard, click `New +` then `Blueprint`.
+3. Connect repo `ghimirehimal/Web-tech`.
+4. Select this project folder and apply the `render.yaml` config.
+5. Wait for build and deploy to complete.
+6. Copy Render public URL and paste it in this README under `Deployed Website URL`.
+
+### First Run Note
+- Database tables are auto-created on startup via `wsgi.py`.
+- Set a strong `SECRET_KEY` in Render environment (blueprint generates one).
 
 ## Admin Login
 - Email: admin@jutta-lagani.com

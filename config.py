@@ -12,10 +12,14 @@ class Config:
     
     # Database Configuration
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url and database_url.startswith('postgres://'):
+        # Render may provide postgres://; SQLAlchemy expects postgresql://
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
     
     # Use SQLite for local development, PostgreSQL for production (Render)
-    if os.environ.get('DATABASE_URL'):
-        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    if database_url:
+        SQLALCHEMY_DATABASE_URI = database_url
     else:
         SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'instance', 'jutta_lagani.db')
     
