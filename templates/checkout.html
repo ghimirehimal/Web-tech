@@ -366,19 +366,11 @@
             <!-- Order Items -->
             {% for item in cart_items %}
             <div class="order-item">
-              {% if item['product'].category == 'shoes' %}
               <img
-                src="https://via.placeholder.com/70x70/8B0000/FFFFFF?text={{ item['product'].name|urlencode }}"
+                src="{{ product_image_url(item['product']) }}"
                 alt="{{ item['product'].name }}"
                 class="order-item-image"
               />
-              {% else %}
-              <img
-                src="https://via.placeholder.com/70x70/333333/FFFFFF?text={{ item['product'].name|urlencode }}"
-                alt="{{ item['product'].name }}"
-                class="order-item-image"
-              />
-              {% endif %}
               <div class="order-item-info">
                 <h6>{{ item['product'].name }}</h6>
                 <p class="text-muted mb-0">Qty: {{ item['quantity'] }}</p>

@@ -177,6 +177,21 @@ def create_app(config_class=Config):
         """Inject product categories into templates"""
         return dict(categories=['shoes', 'clothing'])
     
+    @app.context_processor
+    def inject_template_helpers():
+        """Expose helper utilities to templates."""
+        def product_image_url(product):
+            """Return a safe local image URL for a product with category fallback."""
+            image_name = getattr(product, 'image', None)
+            if image_name:
+                local_path = os.path.join(app.static_folder, 'images', image_name)
+                if os.path.exists(local_path):
+                    return url_for('static', filename=f'images/{image_name}')
+            fallback = 'images/product-shoes.svg' if getattr(product, 'category', '') == 'shoes' else 'images/product-clothing.svg'
+            return url_for('static', filename=fallback)
+        
+        return dict(product_image_url=product_image_url)
+    
     # ============================================================
     # HELPER FUNCTIONS
     # ============================================================
@@ -241,10 +256,10 @@ def create_app(config_class=Config):
         """
         Home Page - Displays featured products and hero section
         """
-        # Get featured products (random 8 products)
+        # Get featured products (random 5 products)
         featured_products = Product.query.filter_by(is_available=True).order_by(
             func.random()
-        ).limit(8).all()
+        ).limit(5).all()
         
         # Get new arrivals (latest 4 products)
         new_arrivals = Product.query.filter_by(is_available=True).order_by(
@@ -268,9 +283,12 @@ def create_app(config_class=Config):
         """About Us Page"""
         return render_template('about.html')
     
-    @app.route('/contact')
+    @app.route('/contact', methods=['GET', 'POST'])
     def contact():
         """Contact Us Page"""
+        if request.method == 'POST':
+            flash('Thank you for contacting us. We will get back to you soon.', 'success')
+            return redirect(url_for('contact'))
         return render_template('contact.html')
     
     # ============================================================
@@ -1082,6 +1100,50 @@ def create_app(config_class=Config):
                 image='shoe5.jpg'
             ),
             Product(
+                name='Royal Velvet Jutti',
+                description='Premium velvet jutti with detailed zari embroidery for festive wear.',
+                price=2799,
+                original_price=3399,
+                category='shoes',
+                subcategory='Jutti',
+                brand='JUTTA LAGANI',
+                color='Navy',
+                size='6,7,8,9,10',
+                material='Velvet',
+                stock=28,
+                is_available=True,
+                image='shoe6.jpg'
+            ),
+            Product(
+                name='Classic Ethnic Loafers',
+                description='Slip-on loafers with handcrafted finish, suitable for formal occasions.',
+                price=3599,
+                original_price=4299,
+                category='shoes',
+                subcategory='Loafers',
+                brand='JUTTA LAGANI',
+                color='Tan',
+                size='7,8,9,10,11',
+                material='Genuine Leather',
+                stock=22,
+                is_available=True,
+                image='shoe7.jpg'
+            ),
+            Product(
+                name='Festive Kolhapuri Premium',
+                description='Traditional Kolhapuri with cushioned sole and artisan-crafted straps.',
+                price=2399,
+                category='shoes',
+                subcategory='Kolhapuri',
+                brand='JUTTA LAGANI',
+                color='Brown',
+                size='6,7,8,9,10',
+                material='Leather',
+                stock=34,
+                is_available=True,
+                image='shoe8.jpg'
+            ),
+            Product(
                 name='Kurta Set - Festive',
                 description='Beautiful kurta set with dupatta. Perfect for festive occasions.',
                 price=3499,
@@ -1154,6 +1216,51 @@ def create_app(config_class=Config):
                 stock=10,
                 is_available=True,
                 image='cloth5.jpg'
+            ),
+            Product(
+                name='Printed Cotton Kurti',
+                description='Daily-wear cotton kurti with breathable fabric and minimal prints.',
+                price=1899,
+                original_price=2299,
+                category='clothing',
+                subcategory='Kurti',
+                brand='JUTTA LAGANI',
+                color='Mustard',
+                size='S,M,L,XL',
+                material='Cotton',
+                stock=52,
+                is_available=True,
+                image='cloth6.jpg'
+            ),
+            Product(
+                name='Embroidered Waistcoat Set',
+                description='Festive waistcoat set with subtle embroidery for weddings and parties.',
+                price=4299,
+                original_price=4999,
+                category='clothing',
+                subcategory='Waistcoat',
+                brand='JUTTA LAGANI',
+                color='Olive',
+                size='M,L,XL,XXL',
+                material='Silk Blend',
+                stock=18,
+                is_available=True,
+                image='cloth7.jpg'
+            ),
+            Product(
+                name='Contemporary Pathani Suit',
+                description='Modern pathani suit with comfort fit and premium texture.',
+                price=5199,
+                original_price=6099,
+                category='clothing',
+                subcategory='Pathani',
+                brand='JUTTA LAGANI',
+                color='Charcoal',
+                size='M,L,XL,XXL',
+                material='Rayon Blend',
+                stock=20,
+                is_available=True,
+                image='cloth8.jpg'
             ),
         ]
     

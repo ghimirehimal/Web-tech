@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="clothBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#243247" />
+      <stop offset="100%" stop-color="#10161f" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#clothBg)" />
+  <path d="M330 120 L470 120 L510 180 L470 210 L470 380 L330 380 L330 210 L290 180 Z" fill="#d4af37" fill-opacity="0.85" />
+  <text x="60" y="90" font-size="58" fill="#f8eccf" font-family="Georgia, serif">Clothing</text>
+</svg>
+

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d2430" />
+      <stop offset="100%" stop-color="#313f5b" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)" />
+  <path d="M290 180 L510 180 L560 280 L500 320 L500 620 L300 620 L300 320 L240 280 Z" fill="#d4af37" />
+  <text x="70" y="140" font-size="74" fill="#f8eccf" font-family="Georgia, serif">JUTTA</text>
+  <text x="70" y="210" font-size="48" fill="#f8eccf" font-family="Georgia, serif">Clothing Collection</text>
+</svg>
+

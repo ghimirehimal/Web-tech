@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b0000" />
+      <stop offset="100%" stop-color="#2d3544" />
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="700" fill="url(#bg)" />
+  <text x="80" y="220" font-size="86" fill="#f8e5b7" font-family="Georgia, serif">About</text>
+  <text x="80" y="310" font-size="72" fill="#f8e5b7" font-family="Georgia, serif">JUTTA LAGANI</text>
+  <text x="80" y="390" font-size="34" fill="#f8e5b7" font-family="Arial, sans-serif">Modern Ethno-Urban Fashion</text>
+</svg>
+

@@ -239,19 +239,11 @@ endblock %} {% block extra_css %}
               <tr>
                 <td>
                   <div class="cart-product">
-                    {% if item['product'].category == 'shoes' %}
                     <img
-                      src="https://via.placeholder.com/80x80/8B0000/FFFFFF?text={{ item['product'].name|urlencode }}"
+                      src="{{ product_image_url(item['product']) }}"
                       alt="{{ item['product'].name }}"
                       class="cart-product-image"
                     />
-                    {% else %}
-                    <img
-                      src="https://via.placeholder.com/80x80/333333/FFFFFF?text={{ item['product'].name|urlencode }}"
-                      alt="{{ item['product'].name }}"
-                      class="cart-product-image"
-                    />
-                    {% endif %}
                     <div class="cart-product-info">
                       <h5>
                         <a

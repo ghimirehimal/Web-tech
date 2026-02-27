@@ -118,17 +118,10 @@
       <div class="col-lg-3 col-md-4 col-sm-6">
         <div class="wishlist-card">
           <div class="wishlist-image">
-            {% if item.product.category == 'shoes' %}
             <img
-              src="https://via.placeholder.com/300x200/8B0000/FFFFFF?text={{ item.product.name|urlencode }}"
+              src="{{ product_image_url(item.product) }}"
               alt="{{ item.product.name }}"
             />
-            {% else %}
-            <img
-              src="https://via.placeholder.com/300x200/333333/FFFFFF?text={{ item.product.name|urlencode }}"
-              alt="{{ item.product.name }}"
-            />
-            {% endif %}
           </div>
 
           <div class="wishlist-info">

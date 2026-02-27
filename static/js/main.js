@@ -174,9 +174,7 @@ function quickView(productId) {
  * Add to wishlist
  */
 function addToWishlist(productId) {
-    // For now, just show an alert
-    // Can be enhanced with AJAX
-    showAlert('Added to wishlist!', 'success');
+    window.location.href = '/add_to_wishlist/' + productId;
 }
 
 /**

@@ -4,8 +4,8 @@ Fashion{% endblock %} {% block extra_css %}
   /* Hero Section Styles */
   .hero-section {
     background:
-      linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-      url("https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80");
+      linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+      url("{{ url_for('static', filename='images/hero-bg.svg') }}");
     background-size: cover;
     background-position: center;
     height: 80vh;
@@ -330,7 +330,7 @@ Fashion{% endblock %} {% block extra_css %}
           class="category-card d-block"
         >
           <img
-            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            src="{{ url_for('static', filename='images/category-shoes.svg') }}"
             alt="Shoes Collection"
           />
           <div class="category-overlay">
@@ -344,7 +344,7 @@ Fashion{% endblock %} {% block extra_css %}
           class="category-card d-block"
         >
           <img
-            src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            src="{{ url_for('static', filename='images/category-clothing.svg') }}"
             alt="Clothing Collection"
           />
           <div class="category-overlay">
@@ -415,7 +415,7 @@ Fashion{% endblock %} {% block extra_css %}
 
     <div class="row g-4">
       {% for product in featured_products %}
-      <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="product-card">
           <div class="product-image">
             {% if product.discount_percentage > 0 %}
@@ -444,18 +444,7 @@ Fashion{% endblock %} {% block extra_css %}
               </button>
             </div>
 
-            <!-- Placeholder image if product image doesn't exist -->
-            {% if product.category == 'shoes' %}
-            <img
-              src="https://via.placeholder.com/300x300/8B0000/D4AF37?text={{ product.name|urlencode }}"
-              alt="{{ product.name }}"
-            />
-            {% else %}
-            <img
-              src="https://via.placeholder.com/300x300/333333/D4AF37?text={{ product.name|urlencode }}"
-              alt="{{ product.name }}"
-            />
-            {% endif %}
+            <img src="{{ product_image_url(product) }}" alt="{{ product.name }}" />
           </div>
 
           <div class="product-info">
@@ -513,18 +502,7 @@ Fashion{% endblock %} {% block extra_css %}
           <div class="product-image">
             <span class="product-badge badge-new">NEW</span>
 
-            <!-- Placeholder image -->
-            {% if product.category == 'shoes' %}
-            <img
-              src="https://via.placeholder.com/300x300/8B0000/FFFFFF?text={{ product.name|urlencode }}"
-              alt="{{ product.name }}"
-            />
-            {% else %}
-            <img
-              src="https://via.placeholder.com/300x300/333333/FFFFFF?text={{ product.name|urlencode }}"
-              alt="{{ product.name }}"
-            />
-            {% endif %}
+            <img src="{{ product_image_url(product) }}" alt="{{ product.name }}" />
           </div>
 
           <div class="product-info">
@@ -606,10 +584,11 @@ Fashion{% endblock %} {% block extra_css %}
         <p class="mb-4 opacity-75">
           Get the latest updates on new products and upcoming sales
         </p>
-        <form class="newsletter-form d-flex gap-2" action="#" method="POST">
+        <form class="newsletter-form d-flex gap-2" onsubmit="event.preventDefault(); subscribeNewsletter();">
           <input
             type="email"
             class="form-control"
+            id="newsletterEmail"
             placeholder="Enter your email address"
             required
           />
@@ -631,8 +610,7 @@ Fashion{% endblock %} {% block extra_css %}
 
   // Add to Wishlist Function
   function addToWishlist(productId) {
-    // Show alert for now (can be enhanced with AJAX)
-    alert("Added to wishlist!");
+    window.location.href = "/add_to_wishlist/" + productId;
   }
 </script>
 {% endblock %}

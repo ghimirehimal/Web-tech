@@ -144,7 +144,7 @@
         {% for item in order.items %}
         <div class="order-item">
           <img
-            src="https://via.placeholder.com/70x70/333333/FFFFFF?text=Item"
+            src="{{ url_for('static', filename='images/order-item.svg') }}"
             alt="{{ item.product_name }}"
             class="order-item-img"
           />

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2b1c14" />
+      <stop offset="50%" stop-color="#4a2a1f" />
+      <stop offset="100%" stop-color="#1f2329" />
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)" />
+  <circle cx="260" cy="180" r="130" fill="#d4af37" fill-opacity="0.15" />
+  <circle cx="1310" cy="730" r="180" fill="#8b0000" fill-opacity="0.2" />
+  <text x="100" y="740" font-size="86" fill="#f6e9c4" font-family="Georgia, serif" opacity="0.85">JUTTA LAGANI</text>
+</svg>
+

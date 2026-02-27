@@ -4,7 +4,7 @@ block extra_css %}
   .shop-header {
     background:
       linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-      url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920");
+      url("{{ url_for('static', filename='images/shop-header.svg') }}");
     background-size: cover;
     padding: 60px 0;
     margin-bottom: 40px;
@@ -154,6 +154,7 @@ block extra_css %}
                 type="radio"
                 id="cat-all"
                 name="category"
+                {% if not current_category %}checked{% endif %}
                 onclick="window.location.href='{{ url_for('shop') }}'"
               />
               <label for="cat-all">All Products</label>
@@ -163,6 +164,7 @@ block extra_css %}
                 type="radio"
                 id="cat-shoes"
                 name="category"
+                {% if current_category == 'shoes' %}checked{% endif %}
                 onclick="window.location.href='{{ url_for('shop', category='shoes') }}'"
               />
               <label for="cat-shoes">Shoes</label>
@@ -172,6 +174,7 @@ block extra_css %}
                 type="radio"
                 id="cat-clothing"
                 name="category"
+                {% if current_category == 'clothing' %}checked{% endif %}
                 onclick="window.location.href='{{ url_for('shop', category='clothing') }}'"
               />
               <label for="cat-clothing">Clothing</label>
@@ -206,17 +209,7 @@ block extra_css %}
                     ><i class="fas fa-eye"></i
                   ></a>
                 </div>
-                {% if product.category == 'shoes' %}
-                <img
-                  src="https://via.placeholder.com/300x250/8B0000/FFFFFF?text=Shoes"
-                  alt="{{ product.name }}"
-                />
-                {% else %}
-                <img
-                  src="https://via.placeholder.com/300x250/333333/FFFFFF?text=Clothing"
-                  alt="{{ product.name }}"
-                />
-                {% endif %}
+                <img src="{{ product_image_url(product) }}" alt="{{ product.name }}" />
               </div>
               <div class="product-info">
                 <span class="product-category">{{ product.category }}</span>

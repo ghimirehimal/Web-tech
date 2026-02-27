@@ -29,6 +29,15 @@ JUTTA LAGANI is a Flask-based e-commerce platform for ethnic footwear and clothi
 - Admin dashboard and product/order management
 - Responsive UI for desktop and mobile screens
 
+## Latest Fixes (February 27, 2026)
+- Landing page featured products now show 5 items at a time.
+- Navigation links for Home, Shop, Categories, About, and Contact are wired correctly.
+- Contact form now handles POST submission and returns a success flash message.
+- Product image rendering now uses local static images with safe fallbacks, reducing external image dependency.
+- Placeholder images were removed across key pages (home, shop, product detail, cart, checkout, wishlist, orders, profile, admin products).
+- Product seed data was expanded and now includes additional shoes and clothing products.
+- Startup and seed flows were hardened so products reliably appear after app start/deploy.
+
 ## Tech Stack
 - Backend: Python, Flask, Flask-SQLAlchemy, Flask-Login, Flask-Bcrypt
 - Frontend: HTML, CSS, JavaScript, Bootstrap 5, Jinja2
