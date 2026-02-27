@@ -181,9 +181,11 @@ def create_app(config_class=Config):
     def inject_template_helpers():
         """Expose helper utilities to templates."""
         def product_image_url(product):
-            """Return a safe local image URL for a product with category fallback."""
+            """Return a safe image URL for a product with category fallback."""
             image_name = getattr(product, 'image', None)
             if image_name:
+                if str(image_name).startswith(('http://', 'https://')):
+                    return image_name
                 local_path = os.path.join(app.static_folder, 'images', image_name)
                 if os.path.exists(local_path):
                     return url_for('static', filename=f'images/{image_name}')
@@ -1039,7 +1041,7 @@ def create_app(config_class=Config):
                 material='Genuine Leather',
                 stock=50,
                 is_available=True,
-                image='shoe1.jpg'
+                image='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Urban Jutti',
@@ -1054,7 +1056,7 @@ def create_app(config_class=Config):
                 material='Synthetic Leather',
                 stock=35,
                 is_available=True,
-                image='shoe2.jpg'
+                image='https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Kolhapuri Chappal',
@@ -1068,7 +1070,7 @@ def create_app(config_class=Config):
                 material='Leather',
                 stock=40,
                 is_available=True,
-                image='shoe3.jpg'
+                image='https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Loafers Party Wear',
@@ -1083,7 +1085,7 @@ def create_app(config_class=Config):
                 material='Premium Leather',
                 stock=25,
                 is_available=True,
-                image='shoe4.jpg'
+                image='https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Sports Sneakers',
@@ -1097,7 +1099,7 @@ def create_app(config_class=Config):
                 material='Canvas',
                 stock=60,
                 is_available=True,
-                image='shoe5.jpg'
+                image='https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Royal Velvet Jutti',
@@ -1112,7 +1114,7 @@ def create_app(config_class=Config):
                 material='Velvet',
                 stock=28,
                 is_available=True,
-                image='shoe6.jpg'
+                image='https://images.unsplash.com/photo-1528701800489-20be9c5f6f3a?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Classic Ethnic Loafers',
@@ -1127,7 +1129,7 @@ def create_app(config_class=Config):
                 material='Genuine Leather',
                 stock=22,
                 is_available=True,
-                image='shoe7.jpg'
+                image='https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Festive Kolhapuri Premium',
@@ -1141,7 +1143,52 @@ def create_app(config_class=Config):
                 material='Leather',
                 stock=34,
                 is_available=True,
-                image='shoe8.jpg'
+                image='https://images.unsplash.com/photo-1494496195158-c3becb4f2475?auto=format&fit=crop&w=900&q=80'
+            ),
+            Product(
+                name='Handwoven Bridal Mojari',
+                description='Wedding-ready mojari with handwoven detailing and cushioned insole for comfort.',
+                price=3899,
+                original_price=4599,
+                category='shoes',
+                subcategory='Mojari',
+                brand='JUTTA LAGANI',
+                color='Ivory',
+                size='6,7,8,9,10',
+                material='Leather',
+                stock=18,
+                is_available=True,
+                image='https://images.unsplash.com/photo-1573100925118-870b8efc799d?auto=format&fit=crop&w=900&q=80'
+            ),
+            Product(
+                name='Embroidered Slip-On Jutti',
+                description='Elegant slip-on jutti with floral embroidery, ideal for festive occasions.',
+                price=2599,
+                original_price=3099,
+                category='shoes',
+                subcategory='Jutti',
+                brand='JUTTA LAGANI',
+                color='Wine',
+                size='6,7,8,9,10',
+                material='Textile',
+                stock=30,
+                is_available=True,
+                image='https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=900&q=80'
+            ),
+            Product(
+                name='Heritage Peshawari Sandal',
+                description='Traditional peshawari sandal with reinforced sole and artisan finish.',
+                price=2999,
+                original_price=3599,
+                category='shoes',
+                subcategory='Sandal',
+                brand='JUTTA LAGANI',
+                color='Brown',
+                size='7,8,9,10,11',
+                material='Genuine Leather',
+                stock=26,
+                is_available=True,
+                image='https://images.unsplash.com/photo-1531312267126-822c7d45d6a4?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Kurta Set - Festive',
@@ -1156,7 +1203,7 @@ def create_app(config_class=Config):
                 material='Silk Blend',
                 stock=30,
                 is_available=True,
-                image='cloth1.jpg'
+                image='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Indo-Western Sherwani',
@@ -1171,7 +1218,7 @@ def create_app(config_class=Config):
                 material='Silk',
                 stock=15,
                 is_available=True,
-                image='cloth2.jpg'
+                image='https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Palazzo Suit',
@@ -1185,7 +1232,7 @@ def create_app(config_class=Config):
                 material='Cotton',
                 stock=45,
                 is_available=True,
-                image='cloth3.jpg'
+                image='https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Anarkali Dress',
@@ -1200,7 +1247,7 @@ def create_app(config_class=Config):
                 material='Georgette',
                 stock=20,
                 is_available=True,
-                image='cloth4.jpg'
+                image='https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Lehenga Choli',
@@ -1215,7 +1262,7 @@ def create_app(config_class=Config):
                 material='Silk',
                 stock=10,
                 is_available=True,
-                image='cloth5.jpg'
+                image='https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Printed Cotton Kurti',
@@ -1230,7 +1277,7 @@ def create_app(config_class=Config):
                 material='Cotton',
                 stock=52,
                 is_available=True,
-                image='cloth6.jpg'
+                image='https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Embroidered Waistcoat Set',
@@ -1245,7 +1292,7 @@ def create_app(config_class=Config):
                 material='Silk Blend',
                 stock=18,
                 is_available=True,
-                image='cloth7.jpg'
+                image='https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=80'
             ),
             Product(
                 name='Contemporary Pathani Suit',
@@ -1260,28 +1307,100 @@ def create_app(config_class=Config):
                 material='Rayon Blend',
                 stock=20,
                 is_available=True,
-                image='cloth8.jpg'
+                image='https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80'
+            ),
+            Product(
+                name='Silk Festive Kurta',
+                description='Premium silk kurta with subtle patterns for festive gatherings.',
+                price=3799,
+                original_price=4499,
+                category='clothing',
+                subcategory='Kurta',
+                brand='JUTTA LAGANI',
+                color='Royal Blue',
+                size='M,L,XL,XXL',
+                material='Silk',
+                stock=24,
+                is_available=True,
+                image='https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=900&q=80'
+            ),
+            Product(
+                name='Linen Nehru Jacket',
+                description='Lightweight linen Nehru jacket that pairs well with kurtas and shirts.',
+                price=2899,
+                original_price=3499,
+                category='clothing',
+                subcategory='Jacket',
+                brand='JUTTA LAGANI',
+                color='Beige',
+                size='M,L,XL',
+                material='Linen',
+                stock=32,
+                is_available=True,
+                image='https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&q=80'
+            ),
+            Product(
+                name='Embroidered Anarkali Gown',
+                description='Floor-length embroidered anarkali gown for weddings and celebrations.',
+                price=6299,
+                original_price=7599,
+                category='clothing',
+                subcategory='Anarkali',
+                brand='JUTTA LAGANI',
+                color='Emerald',
+                size='S,M,L,XL',
+                material='Georgette',
+                stock=14,
+                is_available=True,
+                image='https://images.unsplash.com/photo-1464863979621-258859e62245?auto=format&fit=crop&w=900&q=80'
             ),
         ]
     
     def seed_sample_products():
         """
-        Insert sample products defined in code if they are missing.
+        Insert sample products if missing and upgrade invalid legacy image refs.
         Uses product name uniqueness to keep the operation idempotent.
         """
-        existing_names = {name for (name,) in db.session.query(Product.name).all()}
-        products_to_add = [
-            product for product in _build_sample_products()
-            if product.name not in existing_names
-        ]
+        sample_products = _build_sample_products()
+        sample_by_name = {product.name: product for product in sample_products}
+        sample_names = list(sample_by_name.keys())
+        
+        existing_products = Product.query.filter(Product.name.in_(sample_names)).all()
+        existing_by_name = {product.name: product for product in existing_products}
+        
+        products_to_add = []
+        images_updated = 0
+        
+        for sample in sample_products:
+            existing = existing_by_name.get(sample.name)
+            if not existing:
+                products_to_add.append(sample)
+                continue
+            
+            # Upgrade old local placeholders (shoe1.jpg/cloth1.jpg/default image)
+            # to valid URL images only when the current image reference is invalid.
+            current_image = (existing.image or '').strip()
+            current_is_url = current_image.startswith(('http://', 'https://'))
+            current_local_exists = bool(current_image) and os.path.exists(
+                os.path.join(app.static_folder, 'images', current_image)
+            )
+            should_upgrade_image = (
+                not current_image
+                or current_image == 'default-product.jpg'
+                or (not current_is_url and not current_local_exists)
+            )
+            
+            if should_upgrade_image and sample.image:
+                existing.image = sample.image
+                images_updated += 1
         
         for product in products_to_add:
             db.session.add(product)
         
-        if products_to_add:
+        if products_to_add or images_updated:
             db.session.commit()
         
-        return len(products_to_add)
+        return len(products_to_add), images_updated
     
     # ============================================================
     # CLI COMMANDS
@@ -1307,20 +1426,24 @@ def create_app(config_class=Config):
         else:
             print('Default admin already exists.')
         
-        added_count = seed_sample_products()
+        added_count, updated_images = seed_sample_products()
         if added_count:
             print(f'Added {added_count} sample products.')
-        else:
+        if updated_images:
+            print(f'Updated images for {updated_images} existing products.')
+        if not added_count and not updated_images:
             print('Sample products already up to date.')
     
     @app.cli.command('seed-products')
     def seed_products_command():
         """Insert sample products if missing."""
         db.create_all()
-        added_count = seed_sample_products()
+        added_count, updated_images = seed_sample_products()
         if added_count:
             print(f'Added {added_count} sample products.')
-        else:
+        if updated_images:
+            print(f'Updated images for {updated_images} existing products.')
+        if not added_count and not updated_images:
             print('No new sample products were added.')
     
     @app.cli.command('create-master-admin')
@@ -1347,10 +1470,12 @@ def create_app(config_class=Config):
             print('Email: ghimirehimal72@gmail.com')
             print('Password: Prasad@06128@$')
         
-        added_count = seed_sample_products()
+        added_count, updated_images = seed_sample_products()
         if added_count:
             print(f'Added {added_count} sample products.')
-        else:
+        if updated_images:
+            print(f'Updated images for {updated_images} existing products.')
+        if not added_count and not updated_images:
             print('Sample products already up to date.')
     
     # Expose helper for startup scripts (wsgi/main entrypoint).
